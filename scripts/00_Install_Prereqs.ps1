@@ -23,15 +23,31 @@ $config = Import-PowerShellDataFile -Path .\Config\Config.psd1
     # Install ADS, SSMS
     choco install ssms -y
     choco install azure-data-studio -y
+    
+    # Install VSCode & PowerShell Extension
+    choco install vscode -y
+    choco install choco install vscode-powershell -y
 
     # we'll use git to pull down this repo to the VM
-    choco git -y
+    choco install git -y
 
     # download bak for WideWorldImporters
-    New-Item -Path $config.BackupPath -Type Directory
+    if(!(Test-Path $config.BackupPath) {
+        New-Item -Path $config.BackupPath -Type Directory
+    }
     $wrSplat = @{
         uri     = 'https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak'
         OutFile = (Join-Path $config.BackupPath 'WideWorldImporters-Full.bak')
+    }
+    Invoke-WebRequest @wrSplat
+
+    # download bak for AdventureWorks
+    if(!(Test-Path $config.BackupPath)) {
+        New-Item -Path $config.BackupPath -Type Directory
+    }
+    $wrSplat = @{
+        uri     = 'https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak'
+        OutFile = (Join-Path $config.BackupPath 'AdventureWorks2017-Full.bak')
     }
     Invoke-WebRequest @wrSplat
 
