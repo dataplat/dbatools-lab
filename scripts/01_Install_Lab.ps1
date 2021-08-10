@@ -10,10 +10,10 @@ This script will install two instances of SQL Server:
 $config = Import-PowerShellDataFile -Path .\Config\Config.psd1
 
 # Install SQL Server 2019 as the default instance
-Install-DbaInstance -Version 2019 -SqlInstance dbatoolslab -Feature Engine -Path (Join-Path $config.InstallMediaPath '2019')
+Install-DbaInstance -Version 2019 -SqlInstance dbatoolslab -Feature Engine -Path (Join-Path $config.InstallMediaPath '2019') -AuthenticationMode Mixed
 
 # Install SQL Server 2017 as a named instance
-Install-DbaInstance -Version 2017 -SqlInstance dbatoolslab\sql2017 -Feature Engine -Path (Join-Path $config.InstallMediaPath '2017')
+Install-DbaInstance -Version 2017 -SqlInstance dbatoolslab\sql2017 -Feature Engine -Path (Join-Path $config.InstallMediaPath '2017') -AuthenticationMode Mixed
 
 # Add permissions for the service accounts to backup directory
 Get-Acl -Path (Get-DbaDefaultPath -SqlInstance localhost).Backup | Set-Acl -Path $BackupPath
