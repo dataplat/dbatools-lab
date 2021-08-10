@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+    beardsql01:
+        image: sqldbawithabeard/dbatoolsbeardsql01:v1
+        container_name: beardsql01
+        hostname: f443490967e7
+        ports:  
+          - "15592:1433"
+          - "5022:5022"          
+        networks: 
+          - BeardsMagicNetwork
+        volumes: 
+          - __ReplaceMe__:/var/opt/mssql/backups
+        environment:
+          - MSSQL_ENABLE_HADR=1          
+    beardsql02:
+        image: sqldbawithabeard/dbatoolsbeardsql02:v1
+        container_name: beardsql02
+        hostname: f443490967e7
+        ports:  
+          - "15593:1433"
+          - "5023:5023"         
+        networks: 
+          - BeardsMagicNetwork
+        volumes: 
+          - __ReplaceMe__:/var/opt/mssql/backups
+        environment:
+          - MSSQL_ENABLE_HADR=1
+networks: 
+  BeardsMagicNetwork:
