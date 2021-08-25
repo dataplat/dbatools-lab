@@ -53,6 +53,9 @@ This script will configure our SQL Server instances
     New-DbaAgentJob @jobSplat -Description 'Creating another test job for our lab'
     New-DbaAgentJobStep @jobSplat -StepName 'Step 1: Select servername' -Subsystem TransactSQL -Command 'Select @@ServerName'
 
+#Install Ola's Maintenance Scripts
+    Install-DbaMaintenanceSolution -SqlInstance 'dbatoolslab\sql2017'
+
 # Change a couple of sp_configure settings
     Set-DbaSpConfigure -SqlInstance dbatoolslab\sql2017 -Name RemoteDacConnectionsEnabled -Value 1
     Set-DbaSpConfigure -SqlInstance dbatoolslab\sql2017 -Name CostThresholdForParallelism -Value 10
