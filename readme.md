@@ -18,6 +18,8 @@ This folder holds all the scripts we need to get our lab built:
     - this will clean up all the objects created in the configuration step
     - It won't uninstall instances
 
-## Tests
+## Tests - Coming Soon!
 We love using pester to make sure everything looks like we expect it to. The tests folder contains pester tests that you can run to ensure our dbatools lab is set up perfectly and ready for us to use.
 
+## Advanced - Coming Soon!
+This folder will contain some more advanced scripts, for example terraform that will setup an Azure VM for the lab.
