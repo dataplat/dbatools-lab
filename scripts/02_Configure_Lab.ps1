@@ -36,26 +36,28 @@ This script will configure our SQL Server instances
     Add-DbaDbRoleMember @userSplat -User WWI_ReadWrite -Role db_datawriter
     Add-DbaDbRoleMember @userSplat -User WWI_Owner -Role db_owner
 
-# Create some SQL Agent Jobs
+# Create a SQL Agent Job Category and some SQL Agent Jobs
+    New-DbaAgentJobCategory -SqlInstance dbatoolslab\sql2017 -Category dbatoolslab
+
     $jobSplat = @{
         SqlInstance = 'dbatoolslab\sql2017'
         Job         = 'dbatools lab job'
-
     }
-    New-DbaAgentJob @jobSplat -Description 'Creating a test job for our lab'
+    New-DbaAgentJob @jobSplat -Description 'Creating a test job for our lab' -Category 'dbatoolslab'
     New-DbaAgentJobStep @jobSplat -StepName 'Step 1: Select statement' -Subsystem TransactSQL -Command 'Select 1'
 
     $jobSplat = @{
         SqlInstance = 'dbatoolslab\sql2017'
-        Job         = 'dbatools lab - where am I'
-
+        Job         = 'dbatools lab job - where am I'
     }
-    New-DbaAgentJob @jobSplat -Description 'Creating another test job for our lab'
+    New-DbaAgentJob @jobSplat -Description 'Creating another test job for our lab' -Category 'dbatoolslab'
     New-DbaAgentJobStep @jobSplat -StepName 'Step 1: Select servername' -Subsystem TransactSQL -Command 'Select @@ServerName'
 
 #Install Ola's Maintenance Scripts
-    Install-DbaMaintenanceSolution -SqlInstance 'dbatoolslab\sql2017'
+    Install-DbaMaintenanceSolution -SqlInstance 'dbatoolslab\sql2017' -InstallJobs
 
 # Change a couple of sp_configure settings
     Set-DbaSpConfigure -SqlInstance dbatoolslab\sql2017 -Name RemoteDacConnectionsEnabled -Value 1
     Set-DbaSpConfigure -SqlInstance dbatoolslab\sql2017 -Name CostThresholdForParallelism -Value 10
+
+# add alerts
