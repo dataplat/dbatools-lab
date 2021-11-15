@@ -2,7 +2,7 @@
 dbatools-lab - 01_Install_Lab.ps1
 #######################################
 This script will install two instances of SQL Server:
- - Default instance of SQL Server 2019 Developer edition
+- Default instance of SQL Server 2019 Developer edition
  - Named instance, sql2017l, of SQL Server 2017 Developer edition
 #>
 
@@ -15,6 +15,5 @@ Install-DbaInstance -Version 2019 -SqlInstance dbatoolslab -Feature Engine -Path
 # Install SQL Server 2017 as a named instance
 Install-DbaInstance -Version 2017 -SqlInstance dbatoolslab\sql2017 -Feature Engine -Path (Join-Path $config.InstallMediaPath '2017') -AuthenticationMode Mixed
 
-# Add permissions for the service accounts to backup directory
-Get-Acl -Path (Get-DbaDefaultPath -SqlInstance localhost).Backup | Set-Acl -Path $BackupPath
-# add both 2017 and 2019?
+# Add permissions for the engine service accounts to backup directory, you can get the accounts with
+Get-DbaService -ComputerName dbatoolslab -Type Engine
