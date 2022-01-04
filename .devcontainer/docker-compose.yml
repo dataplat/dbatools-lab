@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  dbatoolslab:
+    container_name: "dbatoolslab"
+    build: .
+    image: dbatools/sqlinstance:latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=dbatools.IO
+      - MSSQL_AGENT_ENABLED=True
+    ports:
+      - "1401:1433"
+    volumes:
+      # Update this to wherever you want VS Code to mount the folder of your project
+      - ..:/workspace:cached
+  dbatoolslab2:
+    depends_on:
+      - dbatoolslab1
+    container_name: "dbatoolslab2"
+    image: dbatools/sqlinstance:latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=dbatools.IO
+      - MSSQL_AGENT_ENABLED=True
+    ports:
+      - "1402:1433"
