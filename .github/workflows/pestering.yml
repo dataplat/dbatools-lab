@@ -53,5 +53,5 @@ jobs:
           Remove-Module Pester
           Import-Module Pester -MinimumVersion 5.0.0
           cd book
-          Invoke-Pester ../tests/bookcode.tests.ps1 -OutputFormat Detailed
+          Invoke-Pester ../tests/bookcode.tests.ps1 -Output Detailed
         shell: pwsh
