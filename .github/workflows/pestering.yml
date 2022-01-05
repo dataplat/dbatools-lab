@@ -39,5 +39,11 @@ jobs:
           Set-DbcConfig -Name skip.connection.ping -Value $true 
           Set-DbcConfig -Name skip.connection.remoting -Value $true
           Invoke-DbcCheck -Check InstanceConnection -SqlInstance 'localhost,15592'
-
         shell: pwsh
+
+      - name: Clone the Book Repo 
+        run: | 
+          mkdir book
+          cd book
+          git clone https://oauth2:${{ secrets.GITLABTOKEN }}@git.manning.com/agileauthor/leMaire.git 
+          dir
