@@ -1,0 +1,39 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs the docker compose up
+      - name: Containers Be ready
+        run: |
+          cd tests\setup\
+          docker-compose up -d
+          docker ps -a 
+        shell: pwsh
+      
+      - name: Test the connection to the container
+        run: |
+          Install-Module dbachecks
+          $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force
+          $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword)
+          $PSDefaultParameterValues = @{'*:SqlCredential' = $sqlcred;'*:WarningAction' = 'Stop'}
+          Set-DbcConfig -Name policy.connection.authscheme -Value SQL 
+          Set-DbcConfig -Name skip.connection.ping -Value $true 
+          Set-DbcConfig -Name skip.connection.remoting -Value $true
+          Invoke-DbcCheck -Check InstanceConnection -SqlInstance 'localhost,15592'
+        shell: pwsh

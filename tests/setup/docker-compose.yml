@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+    dbatools01:
+        image: sqldbawithabeard/dbatoolsbeardsql01:v1
+        container_name: dbatools01
+        hostname: f443490967e7
+        ports:  
+          - "15592:1433"
+          - "5022:5022"          
+        networks: 
+          - dbatoolsnetwork
+        volumes: 
+          - backups:/var/opt/mssql/backups
+        environment:
+          - MSSQL_ENABLE_HADR=1          
+    dbatools02:
+        image: sqldbawithabeard/dbatoolsbeardsql02:v1
+        container_name: dbatools02
+        hostname: f443490967e7
+        ports:  
+          - "15593:1433"
+          - "5023:5023"         
+        networks: 
+          - dbatoolsnetwork
+        volumes: 
+          - backups:/var/opt/mssql/backups
+        environment:
+          - MSSQL_ENABLE_HADR=1
+networks: 
+  dbatoolsnetwork:
+volumes:
+  backups:
