@@ -50,6 +50,8 @@ jobs:
 
       - name: Get some code from the book and test it
         run: | 
+          Remove-Module Pester
+          Import-Module Pester -MinimumVersion 5.0.0
           cd book
           Invoke-Pester ../tests/bookcode.tests.ps1 -OutputFormat Detailed
         shell: pwsh
