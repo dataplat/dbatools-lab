@@ -51,5 +51,4 @@ jobs:
       - name: Get some code from the book and test it
         run: | 
           cd book
-          ls -R
-          Invoke-Pester tests\bookcode.tests.ps1
+          Invoke-Pester ../tests/bookcode.tests.ps1
