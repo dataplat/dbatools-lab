@@ -24,7 +24,7 @@ jobs:
           docker ps -a 
         shell: pwsh
       
-      - name: Test the connection to the container
+      - name: Test the connection to the containers
         run: |
           Set-PSRepository -Name PsGallery -InstallationPolicy Trusted
           Install-Module dbachecks -Force
@@ -38,7 +38,7 @@ jobs:
           Set-DbcConfig -Name policy.connection.authscheme -Value SQL 
           Set-DbcConfig -Name skip.connection.ping -Value $true 
           Set-DbcConfig -Name skip.connection.remoting -Value $true
-          Invoke-DbcCheck -Check InstanceConnection -SqlInstance 'localhost,15592'
+          Invoke-DbcCheck -Check InstanceConnection -SqlInstance 'localhost,15592','localhost,15593'
         shell: pwsh
 
       - name: Clone the Book Repo 
@@ -46,4 +46,10 @@ jobs:
           mkdir book
           cd book
           git clone https://oauth2:${{ secrets.GITLABTOKEN }}@git.manning.com/agileauthor/leMaire.git 
-          dir
+          ls -R
+
+      - name: Get some code from the book and test it
+        run: | 
+          cd book
+          ls -R
+          Invoke-Pester tests\bookcode.tests.ps1
