@@ -28,7 +28,8 @@ jobs:
       
       - name: Test the connection to the container
         run: |
-          Install-Module dbachecks
+          Set-PSRepository -Name PsGallery -InstallationPolicy Trusted
+          Install-Module dbachecks -Force
           $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force
           $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword)
           $PSDefaultParameterValues = @{'*:SqlCredential' = $sqlcred;'*:WarningAction' = 'Stop'}
