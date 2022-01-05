@@ -11,6 +11,16 @@ BeforeDiscovery {
     }
 }
 
+Describe "What do we have then?" {
+    It "How many files?" {
+        $files.count | Should -Be 28
+    }
+
+    It "How many Tests?" {
+        $Tests.Code.Count | Should -Be 357
+    }
+}
+
 Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
     $filename = $_.Name
 
