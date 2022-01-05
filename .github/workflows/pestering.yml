@@ -27,7 +27,7 @@ jobs:
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v4
         with:
-          modules-to-cache: PSFramework, dbachecks, dbatools, Pester:4.10.1
+          modules-to-cache: PSFramework, dbachecks, dbatools, Pester:4.10.1, Pester:5.3.1
 
       - name: Test the connection to the containers
         run: |
@@ -50,8 +50,8 @@ jobs:
 
       - name: Get some code from the book and test it
         run: | 
-          Remove-Module Pester
-          Import-Module Pester -MinimumVersion 5.0.0
+          Remove-Module Pester -ErrorAction SilentlyContinue
+          Import-Module Pester -MinimumVersion 5.3.1
           cd book
           Invoke-Pester ../tests/bookcode.tests.ps1 -Output Detailed
         shell: pwsh
