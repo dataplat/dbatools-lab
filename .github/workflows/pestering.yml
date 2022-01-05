@@ -30,6 +30,7 @@ jobs:
           Install-Module dbachecks -Force
           Install-Module dbatools -Force
           Install-Module PSFramework -Force
+          Install-Module Pester -RequiredVersion 4.10.1
           Import-Module dbachecks -Verbose
           $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force
           $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword)
