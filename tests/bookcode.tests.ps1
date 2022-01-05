@@ -3,7 +3,7 @@ BeforeDiscovery {
     $tests = foreach ($file in $files) {
         $content = Get-Content $file.FullName -Raw -Verbose
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
-        $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace  '\sql2017' , '' -replace 'C:\dbatoolslab\Backup\', ''
+        $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace  '\\sql2017' , '' -replace 'C:\\dbatoolslab\\Backup\\', ''
         [PSCustomObject]@{
             FileName = $file.Name
             Code     = $codelines
