@@ -51,5 +51,5 @@ jobs:
       - name: Get some code from the book and test it
         run: | 
           cd book
-          Invoke-Pester ../tests/bookcode.tests.ps1
+          Invoke-Pester ../tests/bookcode.tests.ps1 -Output Detailed
         shell: pwsh
