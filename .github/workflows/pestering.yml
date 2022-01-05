@@ -23,15 +23,15 @@ jobs:
           docker-compose up -d
           docker ps -a 
         shell: pwsh
-      
+
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v4
+        with:
+          modules-to-cache: PSFramework, dbachecks, dbatools, Pester:4.10.1
+
       - name: Test the connection to the containers
         run: |
-          Set-PSRepository -Name PsGallery -InstallationPolicy Trusted
-          Install-Module dbachecks -Force
-          Install-Module dbatools -Force
-          Install-Module PSFramework -Force
-          Install-Module Pester -RequiredVersion 4.10.1
-          Import-Module dbachecks -Verbose
+          Import-Module dbachecks 
           $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force
           $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword)
           $PSDefaultParameterValues = @{'*:SqlCredential' = $sqlcred;'*:WarningAction' = 'Stop'}
@@ -52,3 +52,4 @@ jobs:
         run: | 
           cd book
           Invoke-Pester ../tests/bookcode.tests.ps1
+        shell: pwsh
