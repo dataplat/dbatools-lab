@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: dbatools-lab-container-test
 
 # Controls when the workflow will run
 on:
@@ -30,6 +28,8 @@ jobs:
         run: |
           Set-PSRepository -Name PsGallery -InstallationPolicy Trusted
           Install-Module dbachecks -Force
+          Install-Module dbatools -Force
+          Install-Module PSFramework -Force
           $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force
           $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword)
           $PSDefaultParameterValues = @{'*:SqlCredential' = $sqlcred;'*:WarningAction' = 'Stop'}
@@ -37,4 +37,5 @@ jobs:
           Set-DbcConfig -Name skip.connection.ping -Value $true 
           Set-DbcConfig -Name skip.connection.remoting -Value $true
           Invoke-DbcCheck -Check InstanceConnection -SqlInstance 'localhost,15592'
+          
         shell: pwsh
