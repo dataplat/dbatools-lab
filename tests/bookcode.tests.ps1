@@ -14,15 +14,23 @@ BeforeDiscovery {
 Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
     $filename = $_.Name
 
-    It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code[0..2] {
-        Mock Get-DbaRegServer -ModuleName dbatools { [PSCustomObject]@{
-                ServerName = 'dbatoolslab'
-            } }
+    It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
+        $code = $_
+        # some code that should not be run
+        $exclusions = @(
+            'Invoke-Command -ComputerName spsql01',
+            '$Env:PSModulePath -Split'
+        )
+
+        If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
+            $code = '$a'
+        }
+        # create a scriptblock with the credential, set it as a default param and set Warnings to fail the test also
         $scriptblock = [scriptblock]::Create("
         `$secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
         `$sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', `$secStringPassword);
-        `$PSDefaultParameterValues = @{'*dba*:SqlCredential' = `$sqlcred;'*:WarningAction' = 'Stop'}; $_")
-        # $scriptblock = [scriptblock]::Create("`$PSDefaultParameterValues = @{'*:WarningAction' = 'Stop'}; $_")
+        `$PSDefaultParameterValues = @{'*dba*:SqlCredential' = `$sqlcred;'*:WarningAction' = 'Stop'}; $code")
+        #$scriptblock = [scriptblock]::Create("`$PSDefaultParameterValues = @{'*:WarningAction' = 'Stop'}; $code")
         $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
     }
 }
