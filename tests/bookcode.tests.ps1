@@ -11,11 +11,9 @@ BeforeDiscovery {
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
-    $filename = $_.Name
-    $filetests = @($tests | Where-Object { $_.FileName -eq $filename }).Code
+Describe "Checking the code works as intended" {
 
-    It "The code <_> should not error"  -ForEach $filetests {
+    It "The file <_.FileName>'s code <_> should not error"  -ForEach $tests.Code {
         $code = $_
         # some code that should not be run
         $exclusions = @(
