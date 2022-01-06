@@ -44,6 +44,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Connect-AzAccount',
             'Get-AzVM',
             'AzureVMs',
+            'query = "SELECT \[Name\]'
             'd1f7bc2b6077'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
