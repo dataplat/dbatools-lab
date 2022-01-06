@@ -43,7 +43,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Invoke-DbaQuery -SqlInstance ''localhost,15592'' -Database AdventureWorks2017 -Query $query',
             'Connect-AzAccount',
             'Get-AzVM',
-            'AzureVMs',
+            'FROM [AzureVMs]',
             'd1f7bc2b6077'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
