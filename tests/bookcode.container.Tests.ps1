@@ -45,8 +45,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Get-AzVM',
             'AzureVMs',
             'query = "SELECT \[Name\]',
-            'd1f7bc2b6077',
-            'Copy-DbaDbTableData'
+            'd1f7bc2b6077'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
@@ -55,7 +54,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
         $scriptblock = [scriptblock]::Create("
         `$secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
         `$sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', `$secStringPassword);
-        `$PSDefaultParameterValues = @{'*dba*:SqlCredential' = `$sqlcred;'*:WarningAction' = 'Stop'}; $code")
+        `$PSDefaultParameterValues = @{'*dba*:SqlCredential' = `$sqlcred;'*:WarningAction' = 'Stop';'*dba*:DestinationSqlCredential' = `$sqlcred;}; $code")
         # $scriptblock = [scriptblock]::Create("`$PSDefaultParameterValues = @{'*:WarningAction' = 'Stop'}; $code")
         $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
         # $true | Should -BeTrue
