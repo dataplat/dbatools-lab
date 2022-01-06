@@ -45,7 +45,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Get-AzVM',
             'AzureVMs',
             'query = "SELECT \[Name\]',
-            'd1f7bc2b6077'
+            'd1f7bc2b6077',
+            'Copy-DbaDbTableData'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
