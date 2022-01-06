@@ -14,12 +14,12 @@ BeforeDiscovery {
 Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..4] {
     $filename = $_.Name
 
-    It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code[0..30] {
+    It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
         $code = $_
         # some code that should not be run on containers or on linux or are asking for input
         $exclusions = @(
             'Invoke-Command -ComputerName spsql01',
-            '$Env:PSModulePath -Split'
+            '$Env:PSModulePath -Split',
             'Install-DbaInstance',
             'Get-Credential',
             'Test-DbaConnection',
@@ -43,7 +43,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Invoke-DbaQuery -SqlInstance ''localhost,15592'' -Database AdventureWorks2017 -Query $query',
             'Connect-AzAccount',
             'Get-AzVM',
-            'FROM [AzureVMs]',
+            'FROM [AzureVMs',
             'd1f7bc2b6077'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
