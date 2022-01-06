@@ -3,7 +3,7 @@ BeforeDiscovery {
     $tests = foreach ($file in $files) {
         $content = Get-Content $file.FullName -Raw -Verbose
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
-        $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace  '\\sql2017' , '' -replace 'C:\\dbatoolslab\\Backup\\', ''
+        $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace  '\\sql2017' , '' -replace 'C:\\dbatoolslab\\Backup\\', '/var/opt/mssql/backups/' -replace '(SqlInstance\s=\s"dbatoolslab")', 'SqlInstance = "localhost,15592"'
         [PSCustomObject]@{
             FileName = $file.Name
             Code     = $codelines
@@ -16,12 +16,14 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
 
     It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code[0..5] {
         $code = $_
-        # some code that should not be run
+        # some code that should not be run on containers or on linux or are asking for input
         $exclusions = @(
             'Invoke-Command -ComputerName spsql01',
             '$Env:PSModulePath -Split',
             'Install-DbaInstance',
-            'Get-Credential'
+            'Get-Credential',
+            'Test-DbaConnection',
+            'Error occurred while establishing connection to SQLDEV01'
         )
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
             $code = 'Write-Host "We cant run this code here!"'
