@@ -29,20 +29,12 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             '-SqlCredential sa',
             'Config.Instances',
             'sqldev04',
+            '57689',
             'Connect-DbaInstance -SqlInstance ''localhost,15592''$instances'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
-        $exclusions | ForEach-Object {
-            if($code.contains($_) ){
-                $itmatches = $_
-                Continue  
-            }else{
-                $itmatches = ''
-            }
-        }
-            
-        If ($itmatches -ne '') {
-            $code = 'Write-Host "We cant run this code here! It contains {0}"' -f $itmatches 
+        If (($exclusions | ForEach-Object {$excluded = $_; $code.contains($excluded) }) -contains $true) {
+            $code = 'Write-Host "We cant run this code here! It contains {0}"' -f $excluded
         }
         $scriptblock = [scriptblock]::Create("
         `$secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
