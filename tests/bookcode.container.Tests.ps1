@@ -34,7 +34,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'ad\sander.stad',
             'dbatools.database.windows.net',
             'Connect-DbaInstance -SqlInstance ''localhost,15592''$instances',
-            'Get-DbaService'
+            'Get-DbaService',
+            'ComputerName -SqlCredential $cred'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
