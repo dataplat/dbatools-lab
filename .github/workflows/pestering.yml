@@ -53,12 +53,12 @@ jobs:
           docker ps -a
           $wrSplat = @{
           uri     = 'https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak'
-          OutFile = 'WideWorldImporters-Full.bak'
+          OutFile = '/var/lib/docker/volumes/backups/WideWorldImporters-Full.bak'
             }
           Invoke-WebRequest @wrSplat
           $wrSplat = @{
           uri     = 'https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak'
-          OutFile = 'AdventureWorks2017-Full.bak'
+          OutFile = '/var/lib/docker/volumes/backups/AdventureWorks2017-Full.bak'
           }
           Invoke-WebRequest @wrSplat
           Remove-Module Pester -ErrorAction SilentlyContinue
