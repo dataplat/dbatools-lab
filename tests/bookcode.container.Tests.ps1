@@ -11,10 +11,10 @@ BeforeDiscovery {
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..3] {
+Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..4] {
     $filename = $_.Name
 
-    It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code[0..15] {
+    It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code[0..30] {
         $code = $_
         # some code that should not be run on containers or on linux or are asking for input
         $exclusions = @(
