@@ -3,9 +3,23 @@ BeforeDiscovery {
 }
 
 Describe "Checking the code works as intended in <_.Name>" -ForEach $files[0..4] {
+    BeforeAll {
+            $content = Get-Content $_.FullName -Raw -Verbose
+            # $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
+            # $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace '\\sql2017' , '' -replace 'C:\\dbatoolslab\\Backup\\', ''
+            # foreach ($line in $codelines) {
+            #     [PSCustomObject]@{
+            #         FileName = $file.Name
+            #         Code     = $line
+            #     }
+            # }
+    }
 
     It "Should have something <_.Name> <_.FullName>" {
-        $_.Name | SHould -Be $_.FullName
+        $_.Name | Should -Be $_.Name
+    }
+    It "Should have some content" {
+        $content | Should -Be ''
     }
 }
 # BeforeDiscovery {
