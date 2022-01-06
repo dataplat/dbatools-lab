@@ -48,7 +48,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[5] 
             'd1f7bc2b6077',
             'Copy-DbaDbTableData',
             'serverlist.txt',
-            'Get-ADComputer'
+            'Get-ADComputer',
             'Find-DbaInstance -DiscoveryType',
             'Find-DbaInstance @splatFindInstance'
 
