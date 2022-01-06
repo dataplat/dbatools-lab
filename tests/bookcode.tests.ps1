@@ -24,7 +24,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Get-Credential'
         )
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
-            $code = 'Write-Host "We cant run this code here!'
+            $code = 'Write-Host "We cant run this code here!"'
         }
         $scriptblock = [scriptblock]::Create("
         `$secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
