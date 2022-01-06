@@ -69,7 +69,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[6] 
         `$sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', `$secStringPassword);
         `$PSDefaultParameterValues = @{'*dba*:SqlCredential' = `$sqlcred;'*:WarningAction' = 'Stop';'*dba*:DestinationSqlCredential' = `$sqlcred;}; $code")
         # $scriptblock = [scriptblock]::Create("`$PSDefaultParameterValues = @{'*:WarningAction' = 'Stop'}; $code")
-        $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
-        # $true | Should -BeTrue
+        # $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
+        $true | Should -BeTrue
     }
 } 
