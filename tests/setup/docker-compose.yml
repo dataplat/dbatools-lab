@@ -10,7 +10,7 @@ services:
         networks: 
           - dbatoolsnetwork
         volumes: 
-          - backups:/var/opt/mssql/backups
+          - /tmp/backups:/var/opt/mssql/backups
         environment:
           - MSSQL_ENABLE_HADR=1          
     dbatools02:
@@ -23,7 +23,7 @@ services:
         networks: 
           - dbatoolsnetwork
         volumes: 
-          - backups:/var/opt/mssql/backups
+          - /tmp/backups:/var/opt/mssql/backups
         environment:
           - MSSQL_ENABLE_HADR=1
 networks: 
