@@ -37,7 +37,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Get-DbaService'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
-        If (($exclusions | ForEach-Object { $code.contains($excluded) }) -contains $true) {
+        If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
             $code = 'Write-Host "We cant run this code here! It is in the exclusion list {0}"' -f $_
         }
         $scriptblock = [scriptblock]::Create("
