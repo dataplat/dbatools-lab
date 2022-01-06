@@ -24,10 +24,11 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Get-Credential',
             'Test-DbaConnection',
             'Error occurred while establishing connection to SQLDEV01',
-            '09bfeb88ac58'
+            '09bfeb88ac58',
+            'Add-DbaDbRoleMember @userSplat'
         )
-        If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
-            $code = 'Write-Host "We cant run this code here! It contains {0}"' -f $_
+        If (($exclusions | ForEach-Object {$excluded = $_; $code.contains($excluded) }) -contains $true) {
+            $code = 'Write-Host "We cant run this code here! It contains {0}"' -f $excluded
         }
         $scriptblock = [scriptblock]::Create("
         `$secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
