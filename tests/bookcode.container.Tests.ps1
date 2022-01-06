@@ -50,7 +50,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[5] 
             'serverlist.txt',
             'Get-ADComputer',
             'Find-DbaInstance -DiscoveryType',
-            'Find-DbaInstance @splatFindInstance'
+            'Find-DbaInstance @splatFindInstance',
+            'System.Data.Sql.SqlDataSourceEnumerator'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
