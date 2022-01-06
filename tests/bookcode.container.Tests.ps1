@@ -3,7 +3,7 @@ BeforeDiscovery {
     $tests = foreach ($file in $files) {
         $content = Get-Content $file.FullName -Raw -Verbose
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
-        $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace  '\\sql2017' , '' -replace  '\\SHAREPOINT' , '' -replace 'C:\\dbatoolslab\\Backup\\', '/var/opt/mssql/backups/' -replace '(SqlInstance\s=\s"dbatoolslab")', 'SqlInstance = "localhost,15592"' -replace '"PRODSQL01", "PRODSQL02", "PRODSQL03\\ShoeFactory"', '"localhost,15592","localhost,15593"' -replace 'PRODSQL02, PRODSQL03\\ShoeFactory', '"localhost,15593"' -replace '(\r\n?|\n){2,}Add-DbaDbRoleMember @userSplat',';Add-DbaDbRoleMember   @userSplat' 
+        $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace  '\\sql2017' , '' -replace  '\\SHAREPOINT' , '' -replace 'C:\\dbatoolslab\\Backup\\', '/var/opt/mssql/backups/' -replace '(SqlInstance\s=\s"dbatoolslab")', 'SqlInstance = "localhost,15592"' -replace '"PRODSQL01", "PRODSQL02", "PRODSQL03\\ShoeFactory"', '"localhost,15592","localhost,15593"' -replace 'PRODSQL02, PRODSQL03\\ShoeFactory', '"localhost,15593"' -replace '(\r\n?|\n){2,}Add-DbaDbRoleMember @userSplat',';Add-DbaDbRoleMember   @userSplat' -replace "'localhost,15592'`$instances", "`$instances"
         [PSCustomObject]@{
             FileName = $file.Name
             Code     = $codelines
@@ -26,7 +26,9 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Error occurred while establishing connection to SQLDEV01',
             '09bfeb88ac58',
             'Add-DbaDbRoleMember @userSplat',
-            '-SqlCredential sa'
+            '-SqlCredential sa',
+            'Config.Instances',
+            'sqldev04'
         )
         If (($exclusions | ForEach-Object {$excluded = $_; $code.contains($excluded) }) -contains $true) {
             $code = 'Write-Host "We cant run this code here! It contains {0}"' -f $excluded
