@@ -25,7 +25,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Test-DbaConnection',
             'Error occurred while establishing connection to SQLDEV01',
             '09bfeb88ac58',
-            'Add-DbaDbRoleMember @userSplat'
+            'Add-DbaDbRoleMember @userSplat',
+            '-SqlCredential sa'
         )
         If (($exclusions | ForEach-Object {$excluded = $_; $code.contains($excluded) }) -contains $true) {
             $code = 'Write-Host "We cant run this code here! It contains {0}"' -f $excluded
