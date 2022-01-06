@@ -50,10 +50,16 @@ jobs:
 
       - name: Get some code from the book and test it
         run: | 
+          docker ps -a
           $wrSplat = @{
           uri     = 'https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak'
           OutFile = 'WideWorldImporters-Full.bak'
             }
+          Invoke-WebRequest @wrSplat
+          $wrSplat = @{
+          uri     = 'https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak'
+          OutFile = (Join-Path $config.BackupPath 'AdventureWorks2017-Full.bak')
+          }
           Invoke-WebRequest @wrSplat
           Remove-Module Pester -ErrorAction SilentlyContinue
           Import-Module Pester -MinimumVersion 5.3.1
