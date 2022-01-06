@@ -31,6 +31,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'sqldev04',
             '57689',
             'devadmin',
+            'sqladmin',
             'ad\sander.stad',
             'database.windows.net',
             'Connect-DbaInstance -SqlInstance ''localhost,15592''$instances',
