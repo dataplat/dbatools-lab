@@ -2,9 +2,9 @@ BeforeDiscovery {
     $files = Get-ChildItem *chapter*.adoc -Recurse | Select-Object FullName, Name
 }
 
-Describe "Checking the code works as intended in <_.Name>" -ForEach $files[0.4] {
+Describe "Checking the code works as intended in <_.Name>" -ForEach $files[0..4] {
 
-    It "Should have something" {
+    It "Should have something <_.Name> <_.FullName>" {
         $_.Name | SHould -Be $_.FullName
     }
 }
