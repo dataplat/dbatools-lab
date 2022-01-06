@@ -2,6 +2,9 @@ name: dbatools-lab-container-test
 
 # Controls when the workflow will run
 on:
+  push:
+    branches:
+      - pestering
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -48,7 +51,6 @@ jobs:
           mkdir book
           cd book
           git clone https://oauth2:${{ secrets.GITLABTOKEN }}@git.manning.com/agileauthor/leMaire.git 
-          ls -R
 
       - name: Get some code from the book and test it on the containers
         run: | 
