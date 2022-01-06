@@ -37,7 +37,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             '''localhost,15592''$server',
             'Get-DbaService',
             'ComputerName -SqlCredential $cred',
-            'csv'
+            'csv',
+            'SQL01'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
