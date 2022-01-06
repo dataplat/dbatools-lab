@@ -3,7 +3,7 @@ BeforeDiscovery {
     $tests = foreach ($file in $files) {
         $content = Get-Content $file.FullName -Raw -Verbose
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
-        $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace  '\\sql2017' , '' -replace  '\\SHAREPOINT' , '' -replace 'C:\\dbatoolslab\\Backup\\', '/var/opt/mssql/backups/' -replace '(SqlInstance\s=\s"dbatoolslab")', 'SqlInstance = "localhost,15592"' -replace '"PRODSQL01", "PRODSQL02", "PRODSQL03\\ShoeFactory"', '"localhost,15592","localhost,15593"' -replace 'PRODSQL02, PRODSQL03\\ShoeFactory', '"localhost,15593"' -replace '(\n)-Table',' -Table' -replace '''localhost,15592''$instances', '$instances' -replace 'clip','Select *' -replace 'SQLDEV02,15591','localhost,15593' -replace 'DestinationDatabase = ''WIP''','DestinationDatabase = ''tempdb'''  -replace '(\n)-Database',' -Database' -replace '//JP','#//JP'
+        $codelines = $reg.Value -replace 'PS> ', '' -replace '\[CA\]', '' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(SqlInstance\s=\s"\w*")', 'SqlInstance = "localhost,15592"' -replace  '\\sql2017' , '' -replace  '\\SHAREPOINT' , '' -replace 'C:\\dbatoolslab\\Backup\\', '/var/opt/mssql/backups/' -replace '(SqlInstance\s=\s"dbatoolslab")', 'SqlInstance = "localhost,15592"' -replace '"PRODSQL01", "PRODSQL02", "PRODSQL03\\ShoeFactory"', '"localhost,15592","localhost,15593"' -replace 'PRODSQL02, PRODSQL03\\ShoeFactory', '"localhost,15593"' -replace '(\n)-Table',' -Table' -replace '''localhost,15592''$instances', '$instances' -replace 'clip','Select *' -replace 'SQLDEV02,15591','localhost,15593' -replace 'DestinationDatabase = ''WIP''','DestinationDatabase = ''tempdb'''  -replace '(\n)-Database',' -Database' -replace '//JP','#//JP' -replace 'FROM [AzureVMs\]','FROM AzureVMs'
         [PSCustomObject]@{
             FileName = $file.Name
             Code     = $codelines
@@ -43,7 +43,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'Invoke-DbaQuery -SqlInstance ''localhost,15592'' -Database AdventureWorks2017 -Query $query',
             'Connect-AzAccount',
             'Get-AzVM',
-            'FROM [AzureVMs',
+            'AzureVMs',
             'd1f7bc2b6077'
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
