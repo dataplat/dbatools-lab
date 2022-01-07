@@ -70,7 +70,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[10]
             'Add-ConditionalFormatting',
             'Read-DbaBackupHeader',
             'Get-DbaDbBackupHistory',
-            'Get-ChildItem \\nas\backups\mydb.bak'
+            'Get-ChildItem \\nas\backups\mydb.bak',
+            'OutVariable files'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
