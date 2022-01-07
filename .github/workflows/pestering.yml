@@ -23,6 +23,7 @@ jobs:
       - name: Containers Be ready
         run: |
           mkdir /tmp/backups
+          chmod 777 /tmp/backups
           cd tests\setup\
           docker-compose up -d
           docker ps -a 
