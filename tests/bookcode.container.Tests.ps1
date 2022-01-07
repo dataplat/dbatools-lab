@@ -59,7 +59,13 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[8] 
             'NoFullBackup',
             'SELECT InstanceName',
             'Write-DbaDataTable',
-            'Import-DbaRegServer'
+            'Import-DbaRegServer',
+            'New-DbaLogin',
+            'Get-DbaErrorLog',
+            'Get-DbaAgReplica',
+            'Export-DbaLogin',
+            'Excel',
+            'Find-DbaLoginInGroup'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
