@@ -74,7 +74,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[9] 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
-            $code = 'Write-Host "We cant run this code here! It is in the exclusion list {0}"' -f $_[0..30] -join ''
+            $code = 'Write-Host "We cant run this code here! It is in the exclusion list {0}"' -f $code[0..30] -join ''
         }
         $scriptblock = [scriptblock]::Create("
         `$secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
