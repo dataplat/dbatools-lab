@@ -46,7 +46,7 @@ jobs:
           Invoke-DbcCheck -Check InstanceConnection -SqlInstance 'localhost,15592','localhost,15593'
           # Remove-DbaDatabase -SqlInstance 'localhost,15592' -Database AdventureWorks2017 -Confirm:$false  
           Set-DbaDbRecoveryModel -SqlInstance 'localhost,15592' -Database pubs  -RecoveryModel Full -Confirm:$false
-          Backup-DbaDatabase -SqlInstance 'localhost,15592' -Database pubs -FilePath /var/opt/mssql/backups/pubs.bak -IgnoreFileChecks -Verbose
+          Backup-DbaDatabase -SqlInstance 'localhost,15592' -Database pubs -FilePath /var/opt/mssql/backups/pubs.bak -IgnoreFileChecks
           Backup-DbaDatabase -SqlInstance 'localhost,15592' -Database pubs -Type Diff -FilePath /var/opt/mssql/backups/pubsdiff.bak -IgnoreFileChecks
           Backup-DbaDatabase -SqlInstance 'localhost,15592' -Database pubs -Type Log -FilePath /var/opt/mssql/backups/pubs.trn -IgnoreFileChecks 
           ls -l /tmp/backups
