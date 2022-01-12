@@ -33,7 +33,8 @@ Import-DbaSpConfigure @splatExportSpConf')),'    Path = "/tmp/backups/container\
 }
 Import-DbaSpConfigure @splatExportSpConf -WarningAction SilentlyContinue' -replace 'Source\s+= "dbatoolslab"','Source      = "localhost,15592"' -replace 'Destination\s+= "dbatoolslab"','Destination      = "localhost,15593"'-replace '-Destination dbatoolslab','-Destination ''localhost,15593''' -replace ([Regex]::Escape('SharedPath  = "\\dbatoolslab\Backup"')),'SharedPath  = "/var/opt/mssql/backups/shared"' -replace 'Path\s+= "C:\\dbatoolslab\\Backup"','Path  = "/var/opt/mssql/backups"' -replace 'Out-GridView -Passthru', 'Select -first 2 ' -replace  '\$restoreSplat = @{
 \s+SqlInstance = ''localhost,15592''' , '$restoreSplat = @{
-SqlInstance = ''localhost,15593'''  -replace  '\$tableSplat = @{
+SqlInstance = ''localhost,15593''
+WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
     SqlInstance = ''localhost,15592''' , '$tableSplat = @{
         SqlInstance = ''localhost,15593'''
 
