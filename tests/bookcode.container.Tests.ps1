@@ -37,7 +37,7 @@ Import-DbaSpConfigure @splatExportSpConf -WarningAction SilentlyContinue'
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files[13] {
+Describe "Checking the file <_.Name> code works as intended" -ForEach $files[14] {
     $filename = $_.Name
 
     It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
