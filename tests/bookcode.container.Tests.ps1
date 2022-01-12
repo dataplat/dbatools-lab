@@ -28,7 +28,7 @@ Backup-DbaDatabase @splatRestoreDb' -replace ([Regex]::Escape('-Path \\nas\backu
 }
 Import-DbaSpConfigure @splatExportSpConf')),'    Path = "/tmp/backups/container\spconfigure.sql"
 }
-Import-DbaSpConfigure @splatExportSpConf -WarningAction SilentlyContinue' -replace 'Source\s+= "dbatoolslab"','Source      = "localhost,15592"' -replace 'Destination\s+= "dbatoolslab"','Destination      = "localhost,15593"' -replace ([Regex]::Escape('SharedPath  = "\\dbatoolslab\Backup"')),'SharedPath  = "/var/opt/mssql/backups/shared"' -replace ([Regex]::Escape('SharedPath    = "C:\dbatoolslab\Backup"')),'SharedPath  = "/var/opt/mssql/backups/shared"'
+Import-DbaSpConfigure @splatExportSpConf -WarningAction SilentlyContinue' -replace 'Source\s+= "dbatoolslab"','Source      = "localhost,15592"' -replace 'Destination\s+= "dbatoolslab"','Destination      = "localhost,15593"' -replace ([Regex]::Escape('SharedPath  = "\\dbatoolslab\Backup"')),'SharedPath  = "/var/opt/mssql/backups/shared"' -replace ([Regex]::Escape('SharedPath    = "C:\dbatoolslab\Backup"')),'SharedPath  = "/var/opt/mssql/backups/shared"' -replace ([Regex]::Escape('Path    = "C:\dbatoolslab\Backup"')),'Path  = "/var/opt/mssql/backups"'
 
         [PSCustomObject]@{
             FileName = $file.Name
