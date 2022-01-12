@@ -31,7 +31,7 @@ Backup-DbaDatabase @splatRestoreDb'
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files[12] {
+Describe "Checking the file <_.Name> code works as intended" -ForEach $files[13] {
     $filename = $_.Name
 
     It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
@@ -42,7 +42,6 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[12]
             'Install-DbaInstance',
             'Get-Credential',
             'Test-DbaConnection',
-            'Add-DbaDbRoleMember @userSplat',
             '-SqlCredential sa',
             'Config.Instances',
             'sqldev04',
