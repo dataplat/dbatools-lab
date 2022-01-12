@@ -97,7 +97,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[14]
             'Get-DbaSuspectPage',
             'Update-DbaInstance',
             '11112019080741',
-            'DetachAttach  = $true'
+            'DetachAttach  = $true',
+            'Copy-DbaLinkedServer'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
