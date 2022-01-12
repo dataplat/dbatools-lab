@@ -22,7 +22,7 @@ Backup-DbaDatabase @splatRestoreDb')),'$splatRestoreDb = @{
     Database = "pubs"
     FilePath = "/var/opt/mssql/backups\pubs.bak"
 }
-Backup-DbaDatabase @splatRestoreDb'
+Backup-DbaDatabase @splatRestoreDb' -replace ([Regex]::Escape('-Path \\nas\backups\''localhost,15593''')),'-Path /tmp/backups/container'
 
         [PSCustomObject]@{
             FileName = $file.Name
@@ -89,7 +89,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[13]
             'Get-ChildItem \\nas\backups\mydb.bak',
             'OutVariable files',
             'Get-DbaSuspectPage',
-            'Update-DbaInstance'
+            'Update-DbaInstance',
+            '11112019080741'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
