@@ -14,7 +14,7 @@ BeforeDiscovery {
 }
 Backup-DbaDatabase @splatRestoreDb')),'$splatRestoreDb = @{
     SqlInstance = "localhost,15592"
-    Database = "AdventureWorks2017"
+    Database = "pubs"
     FilePath = "/var/opt/mssql/backups\pubs.bak"
 }
 Backup-DbaDatabase @splatRestoreDb'
