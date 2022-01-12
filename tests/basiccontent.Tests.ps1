@@ -2,7 +2,8 @@ BeforeDiscovery {
     $files = Get-ChildItem *chapter*.adoc -Recurse | Select-Object FullName, Name
     $tests = foreach ($file in $files) {
         $content = Get-Content $file.FullName -Raw -Verbose
-        $content = $content -replace ([Regex]::Escape('PS> Restore-DbaDbSnapshot @splatRestoreSnapshot')), 'PS> Restore-DbaDbSnapshot @splatRestoreSnapshot \n'
+        $content = $content -replace ([Regex]::Escape('PS> Restore-DbaDbSnapshot @splatRestoreSnapshot')), 'PS> Restore-DbaDbSnapshot @splatRestoreSnapshot 
+'
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
         $codelines = $reg.Value 
         [PSCustomObject]@{
