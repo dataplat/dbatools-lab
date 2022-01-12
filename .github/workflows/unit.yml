@@ -2,9 +2,9 @@ name: dbatools-lab-unit-test
 
 # Controls when the workflow will run
 on:
-  #push:
-  #  branches:
-  #    - pestering
+  push:
+    branches:
+      - pestering
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
