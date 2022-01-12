@@ -29,7 +29,7 @@ Backup-DbaDatabase @splatRestoreDb'
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files[11] {
+Describe "Checking the file <_.Name> code works as intended" -ForEach $files[12] {
     $filename = $_.Name
 
     It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
