@@ -1,0 +1,40 @@
+name: dbatools-lab-unit-test
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - pestering
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v4
+        with:
+          modules-to-cache: dbatools, Pester:5.3.1
+
+
+      - name: Clone the Book Repo 
+        run: | 
+          mkdir book
+          cd book
+          git clone https://oauth2:${{ secrets.GITLABTOKEN }}@git.manning.com/agileauthor/leMaire.git 
+
+      - name: Get some code from the book and test it on the containers
+        run: | 
+          Remove-Module Pester -ErrorAction SilentlyContinue
+          Import-Module Pester -MinimumVersion 5.3.1
+          cd book
+          Invoke-Pester ../tests/basiccontent.Tests.ps1 -Output Detailed
+        shell: pwsh
