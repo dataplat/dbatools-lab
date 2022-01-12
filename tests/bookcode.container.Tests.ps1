@@ -24,7 +24,7 @@ Backup-DbaDatabase @splatRestoreDb')),'$splatRestoreDb = @{
     FilePath = "/var/opt/mssql/backups\pubs.bak"
 }
 Backup-DbaDatabase @splatRestoreDb' -replace ([Regex]::Escape('-Path \\nas\backups\''localhost,15593''')),'-Path /tmp/backups/container' -replace ([Regex]::Escape('C:\git\ExportInstance')),'/tmp/backups/container' -replace ([Regex]::Escape('SqlInstance = "''localhost,15593'',15591"')),'SqlInstance = "localhost,15593"' -replace ([Regex]::Escape('SqlCredential = "sqladmin"')),'
-' -replace ([Regex]::Escape('Export-DbaInstance -SqlInstance ''localhost,15592'' -Path /tmp/backups/container')),'Export-DbaInstance -SqlInstance ''localhost,15592'' -Path /tmp/backups/container -Exclude Credentials' -replace ([Regex]::Escape('Exclude = "ResourceGovernor"')),'Exclude = "ResourceGovernor,Credentials,LinkedServers"'  -replace ([regex]::Escape('FilePath = "/tmp/backups/container\spconfigure.sql"')), 'Path = "/tmp/backups/container\spconfigure.sql"'
+' -replace ([Regex]::Escape('Export-DbaInstance -SqlInstance ''localhost,15592'' -Path /tmp/backups/container')),'Export-DbaInstance -SqlInstance ''localhost,15592'' -Path /tmp/backups/container -Exclude Credentials,LinkedServers' -replace ([Regex]::Escape('Exclude = "ResourceGovernor"')),'Exclude = "ResourceGovernor,Credentials,LinkedServers"'  -replace ([regex]::Escape('FilePath = "/tmp/backups/container\spconfigure.sql"')), 'Path = "/tmp/backups/container\spconfigure.sql"'
 
         [PSCustomObject]@{
             FileName = $file.Name
