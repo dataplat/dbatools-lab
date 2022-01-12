@@ -28,7 +28,7 @@ Backup-DbaDatabase @splatRestoreDb' -replace ([Regex]::Escape('-Path \\nas\backu
 }
 Import-DbaSpConfigure @splatExportSpConf')),'    Path = "/tmp/backups/container\spconfigure.sql"
 }
-Import-DbaSpConfigure @splatExportSpConf -WarningAction SilentlyContinue' -replace 'Source\s+= "dbatoolslab"','Source      = "localhost,15592"' -replace 'Destination\s+= "dbatoolslab"','Destination      = "localhost,15593"' -replace ([Regex]::Escape('SharedPath  = "\\dbatoolslab\Backup"')),'SharedPath  = "/var/opt/mssql/backups/shared"' -replace 'Path\s+= "C:\\dbatoolslab\\Backup"','Path  = "/var/opt/mssql/backups"' -replace 'Out-GridView -Passthru', 'Select -first 2 ' -replace 'PS> $diff = Backup-DbaDatabase @diffSplat
+Import-DbaSpConfigure @splatExportSpConf -WarningAction SilentlyContinue' -replace 'Source\s+= "dbatoolslab"','Source      = "localhost,15592"' -replace 'Destination\s+= "dbatoolslab"','Destination      = "localhost,15593"'-replace '-Destination dbatoolslab','-Destination ''localhost,15593''' -replace ([Regex]::Escape('SharedPath  = "\\dbatoolslab\Backup"')),'SharedPath  = "/var/opt/mssql/backups/shared"' -replace 'Path\s+= "C:\\dbatoolslab\\Backup"','Path  = "/var/opt/mssql/backups"' -replace 'Out-GridView -Passthru', 'Select -first 2 ' -replace 'PS> $diff = Backup-DbaDatabase @diffSplat
 ', 'PS> $diff = Backup-DbaDatabase @diffSplat' -replace 'PS> Set-DbaDbState @offlineSplat
 ', 'PS> Set-DbaDbState @offlineSplat'
 
