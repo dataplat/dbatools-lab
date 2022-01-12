@@ -10,7 +10,7 @@ WARNING' -replace ([Regex]::Escape('----')),'
 ' -replace ([Regex]::Escape('PS> docker ps')),'PS> docker ps
 ' -replace ([Regex]::Escape('
 PS> Add-DbaDbRoleMember @userSplat -User WWI_Readonly -Role db_datareader')),'PS> Add-DbaDbRoleMember @userSplat -User WWI_Readonly -Role db_datareader' -replace ([Regex]::Escape('PS> Import-DbaSpConfigure @splatExportSpConf')),'PS> Import-DbaSpConfigure @splatExportSpConf
-' -replace 'PS> $diff = Backup-DbaDatabase @diffSplat
+' -replace 'PS> \$diff = Backup-DbaDatabase @diffSplat
 ', 'PS> $diff = Backup-DbaDatabase @diffSplat' -replace 'PS> Set-DbaDbState @offlineSplat
 ', 'PS> Set-DbaDbState @offlineSplat'
 
