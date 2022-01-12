@@ -3,6 +3,7 @@ BeforeDiscovery {
     $tests = foreach ($file in $files) {
         $content = Get-Content $file.FullName -Raw -Verbose
         $content = $content -replace ([Regex]::Escape('PS> Restore-DbaDbSnapshot @splatRestoreSnapshot')), 'PS> Restore-DbaDbSnapshot @splatRestoreSnapshot 
+' -replace ([Regex]::Escape('PS> $databases <2>')),'PS> $databases
 '
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
         $codelines = $reg.Value 
