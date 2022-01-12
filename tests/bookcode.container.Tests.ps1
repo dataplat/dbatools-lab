@@ -28,7 +28,7 @@ Backup-DbaDatabase @splatRestoreDb' -replace ([Regex]::Escape('-Path \\nas\backu
 }
 Import-DbaSpConfigure @splatExportSpConf')),'    Path = "/tmp/backups/container\spconfigure.sql"
 }
-Import-DbaSpConfigure @splatExportSpConf'
+Import-DbaSpConfigure @splatExportSpConf -WarningAction SilentlyContinue'
 
         [PSCustomObject]@{
             FileName = $file.Name
