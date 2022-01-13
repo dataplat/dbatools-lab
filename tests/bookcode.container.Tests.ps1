@@ -63,7 +63,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[18]
             'sqldev04',
             '57689',
             'devadmin',
-            'sqladmin',
+            'SqlCredential sqladmin',
             'ad\sander.stad',
             'windows.net',
             'Connect-DbaInstance -SqlInstance ''localhost,15592''$instances',
