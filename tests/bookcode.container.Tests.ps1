@@ -52,7 +52,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
         $code = $_
         # some code that should not be run on containers or on linux or are asking for input
         $exclusions = @(
-            'Invoke-Command -ComputerName spsql01',
+            'Invoke-Command -ComputerName',
             'Install-DbaInstance',
             'Get-Credential',
             'Test-DbaConnection',
