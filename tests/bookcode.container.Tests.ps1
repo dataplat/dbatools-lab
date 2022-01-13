@@ -39,7 +39,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
     SqlInstance = ''localhost,15592''' , '$tableSplat = @{
         SqlInstance = ''localhost,15593''' -replace '"dockersql1,14333"','''localhost,15593''' -replace 'Path = "/var/opt/mssql/backups"
 \s+OutVariable = file', 'Path = "/tmp/"
-  OutVariable = file'
+  OutVariable = file' -replace 'Copy-DbaDatabase @copySplat ','Copy-DbaDatabase @copySplat -WarningAction SilentlyContinue'
 
         [PSCustomObject]@{
             FileName = $file.Name
