@@ -46,7 +46,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files[16..17] {
+Describe "Checking the file <_.Name> code works as intended" -ForEach $files[15..17] {
     $filename = $_.Name
 
     It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
@@ -112,7 +112,10 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[16.
             '-Login Factory',
             'DbaDbLogShip',
             'Wsfc',
-            'DbaAg',
+            'DbaAgR',
+            'DbaAgF',
+            'DbaAgD',
+            'DbaAgL',
             'Get-DbaAvailabilityGroup',
             'Start-Transcript'
 
