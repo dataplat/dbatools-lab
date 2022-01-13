@@ -111,7 +111,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..
             'DetachAttach  = $true',
             'Copy-DbaLinkedServer',
             'Remove-DbaDbTable',
-            'ad\factoryauditors'
+            'ad\factoryauditors',
+            '-Login Factory'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
