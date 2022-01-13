@@ -25,7 +25,7 @@ Backup-DbaDatabase @splatRestoreDb','
 Database = "pubs"
           FilePath = "/var/opt/mssql/backups/pubs.bak"
     }
-    Backup-DbaDatabase @splatRestoreDb' -replace ([Regex]::Escape('-Path \\nas\backups\''localhost,15593''')),'-Path /tmp/backups/container' -replace ([Regex]::Escape('C:\git\ExportInstance')),'/tmp/backups/container' -replace ([Regex]::Escape('SqlInstance = "''localhost,15593'',15591"')),'SqlInstance = "localhost,15593"' -replace ([Regex]::Escape('
+    Backup-DbaDatabase @splatRestoreDb' -replace ([Regex]::Escape('-Path \\nas\backups\''localhost,15593''')),'-Path /tmp/backups/container' -replace ([Regex]::Escape('C:\git\ExportInstance')),'/tmp/backups/container' -replace ([Regex]::Escape('SqlInstance = "''localhost,15593'',15591"')),'SqlInstance = ''localhost,15593''' -replace ([Regex]::Escape('
 SqlCredential = "sqladmin"')),'' -replace ([Regex]::Escape('Export-DbaInstance -SqlInstance ''localhost,15592'' -Path /tmp/backups/container')),'Export-DbaInstance -SqlInstance ''localhost,15592'' -Path /tmp/backups/container -Exclude Credentials,LinkedServers,ReplicationSettings' -replace ([Regex]::Escape('Exclude = "ResourceGovernor"')),'Exclude = ''ResourceGovernor'',''Credentials'',''LinkedServers'',''ReplicationSettings''' -replace ([regex]::Escape('    FilePath = "/tmp/backups/container\spconfigure.sql"
 }
 Import-DbaSpConfigure @splatExportSpConf')),'    Path = "/tmp/backups/container\spconfigure.sql"
@@ -37,7 +37,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
     SqlInstance = ''localhost,15592''' , '$tableSplat = @{
         SqlInstance = ''localhost,15593''' -replace '"dockersql1,14333"','''localhost,15593''' -replace 'Path = "/var/opt/mssql/backups"
 \s+OutVariable = file', 'Path = "/tmp/"
-  OutVariable = file' -replace 'Copy-DbaDatabase @copySplat','Copy-DbaDatabase @copySplat -WarningAction SilentlyContinue' -replace '''localhost,15593'',"SQL02","SQL03","SQL04","SQL05"' ,'''localhost,15592'',''localhost,15593''' -replace '''localhost,15592''\$instances','$instances'
+  OutVariable = file' -replace 'Copy-DbaDatabase @copySplat','Copy-DbaDatabase @copySplat -WarningAction SilentlyContinue' -replace '''localhost,15593'',"SQL02","SQL03","SQL04","SQL05"' ,'''localhost,15592'',''localhost,15593''' -replace '''localhost,15592''\$instances','$instances' -replace '''''localhost,15593'''',"SQL02","SQL03","SQL04","SQL05"' ,'''localhost,15592'',''localhost,15593''' 
 
         [PSCustomObject]@{
             FileName = $file.Name
