@@ -21,7 +21,8 @@ PS> New-DbaLogin @loginSplat -Login WWI_ReadOnly','PS> New-DbaLogin @loginSplat 
         $codelines = $codelines -replace '\s+Database = "AdventureWorks2017"
 \s+Path = "/var/opt/mssql/backups/pubs.bak"
 }
-Backup-DbaDatabase @splatRestoreDb','Database = "pubs"
+Backup-DbaDatabase @splatRestoreDb','
+Database = "pubs"
           FilePath = "/var/opt/mssql/backups/pubs.bak"
     }
     Backup-DbaDatabase @splatRestoreDb' -replace ([Regex]::Escape('-Path \\nas\backups\''localhost,15593''')),'-Path /tmp/backups/container' -replace ([Regex]::Escape('C:\git\ExportInstance')),'/tmp/backups/container' -replace ([Regex]::Escape('SqlInstance = "''localhost,15593'',15591"')),'SqlInstance = "localhost,15593"' -replace ([Regex]::Escape('
