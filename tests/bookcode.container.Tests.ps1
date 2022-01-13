@@ -117,7 +117,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[15.
             'DbaAgD',
             'DbaAgL',
             'Get-DbaAvailabilityGroup',
-            'Start-Transcript'
+            'Start-Transcript',
+            'Set-DbaAgentServer'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
