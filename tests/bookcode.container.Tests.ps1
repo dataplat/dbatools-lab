@@ -37,7 +37,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
     SqlInstance = ''localhost,15592''' , '$tableSplat = @{
         SqlInstance = ''localhost,15593''' -replace '"dockersql1,14333"','''localhost,15593''' -replace 'Path = "/var/opt/mssql/backups"
 \s+OutVariable = file', 'Path = "/tmp/"
-  OutVariable = file' -replace 'Copy-DbaDatabase @copySplat','Copy-DbaDatabase @copySplat -WarningAction SilentlyContinue'
+  OutVariable = file' -replace 'Copy-DbaDatabase @copySplat','Copy-DbaDatabase @copySplat -WarningAction SilentlyContinue' -replace 'Get-DbaAvailabilityGroup -SqlInstance \$sql1','Get-DbaAvailabilityGroup -SqlInstance ''localhost,15592''' -replace 'Get-DbaAgReplica -SqlInstance $sql1','Get-DbaAgReplica -SqlInstance ''localhost,15592'''
 
         [PSCustomObject]@{
             FileName = $file.Name
@@ -111,7 +111,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[15]
             'ad\factoryauditors',
             '-Login Factory',
             'DbaDbLogShip',
-            'Wsfc'
+            'Wsfc',
+            'DbaAg'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
