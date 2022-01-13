@@ -46,7 +46,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files[16] {
+Describe "Checking the file <_.Name> code works as intended" -ForEach $files[16..17] {
     $filename = $_.Name
 
     It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
@@ -113,7 +113,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[16]
             'DbaDbLogShip',
             'Wsfc',
             'DbaAg',
-            'Get-DbaAvailabilityGroup'
+            'Get-DbaAvailabilityGroup',
+            'Start-Transcript'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
