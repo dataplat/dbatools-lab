@@ -37,7 +37,9 @@ Import-DbaSpConfigure @splatExportSpConf -WarningAction SilentlyContinue' -repla
 SqlInstance = ''localhost,15593''
 WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
     SqlInstance = ''localhost,15592''' , '$tableSplat = @{
-        SqlInstance = ''localhost,15593''' -replace '"dockersql1,14333"','''localhost,15593'''
+        SqlInstance = ''localhost,15593''' -replace '"dockersql1,14333"','''localhost,15593''' -replace 'Path = "/var/opt/mssql/backups"
+\s+OutVariable = file', 'Path = "/tmp/"
+  OutVariable = file'
 
         [PSCustomObject]@{
             FileName = $file.Name
