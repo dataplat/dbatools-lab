@@ -110,7 +110,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[15]
             'Remove-DbaDbTable',
             'ad\factoryauditors',
             '-Login Factory',
-            'Invoke-DbaDbLogShipping'
+            'DbaDbLogShip',
+            'Wsfc'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
