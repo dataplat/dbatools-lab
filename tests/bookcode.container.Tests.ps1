@@ -127,7 +127,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[21]
             'Invoke-DbaDbDataMasking',
             'DbaDac',
             'Tracker.xml',
-            'Watch-DbaXESession'
+            'Watch-DbaXESession',
+            'Read-DbaXEFile'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
