@@ -130,7 +130,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[21]
             'DbaDac',
             'Tracker.xml',
             'Watch-DbaXESession',
-            'Read-DbaXEFile'
+            'Read-DbaXEFile',
+            'XESessionTemplate'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
