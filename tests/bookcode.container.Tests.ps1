@@ -133,7 +133,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[22]
             'Read-DbaXEFile',
             'XESessionTemplate',
             'Set-DbaNetworkCertificate',
-            'Enable-DbaForceNetworkEncryption'
+            'Enable-DbaForceNetworkEncryption',
+            'Set-DbaExtendedProtection'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
