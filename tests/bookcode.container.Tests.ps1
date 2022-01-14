@@ -42,7 +42,8 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
 \s+Description = "Container for AG tests"' ,'' -replace 'D:\\temp','$TestDrive' -replace ' sql02, sql03','''localhost,15593''' -replace '
 \s+Start-DbaXESession' , ' Select *  # Start-DbaXESession' -replace '\s+Source = "mssql1"
 \s+Destination "mssql2", "mssql3"', '    Source = ''localhost,15592''
-Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')),'$sqlcred.Password' -replace ([Regex]::Escape('EncryptionPassword = $securepass')),'EncryptionPassword = $sqlcred.Password' -replace 'New-DbaDbMasterKey @params','New-DbaDbMasterKey @params -Confirm:$false'
+Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')),'$sqlcred.Password' -replace ([Regex]::Escape('EncryptionPassword = $securepass')),'EncryptionPassword = $sqlcred.Password
+DecryptionPassword = $sqlcred.Password' -replace 'New-DbaDbMasterKey @params','New-DbaDbMasterKey @params -Confirm:$false' -replace 'c:\\backups','/tmp' -replace 'c:\\backups\\','/tmp/' -replace 'EncryptionAlgorithm = AES192', ' EncryptionAlgorithm = ''AES192'''
 
         [PSCustomObject]@{
             FileName = $file.Name
