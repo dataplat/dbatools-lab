@@ -32,10 +32,11 @@ jobs:
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v4
         with:
-          modules-to-cache: PSFramework, dbachecks, dbatools, Pester:4.10.1, Pester:5.3.1
+          modules-to-cache: PSFramework, dbachecks, Pester:4.10.1, Pester:5.3.1
 
       - name: Test the connection to the containers
         run: |
+          Install-Module dbatools -Confirm:$false -Force
           Import-Module dbachecks 
           $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force
           $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword)
