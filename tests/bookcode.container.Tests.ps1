@@ -42,7 +42,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
 \s+Description = "Container for AG tests"' ,'' -replace 'D:\\temp','$TestDrive' -replace ' sql02, sql03','''localhost,15593''' -replace '
 \s+Start-DbaXESession' , '    Start-DbaXESession' -replace '\s+Source = "mssql1"
 \s+Destination "mssql2", "mssql3"', '    Source = ''localhost,15592''
-Destination = ''localhost,15593'''
+Destination = ''localhost,15593''' -replace 'Start-DbaXESession', 'Write-Host'
 
         [PSCustomObject]@{
             FileName = $file.Name
