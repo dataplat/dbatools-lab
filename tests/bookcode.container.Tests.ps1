@@ -48,7 +48,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files[0..18] {
+Describe "Checking the file <_.Name> code works as intended" -ForEach $files[19] {
     $filename = $_.Name
 
     It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
