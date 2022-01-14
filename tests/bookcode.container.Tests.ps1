@@ -39,7 +39,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
 \s+OutVariable = file', 'Path = "/tmp/"
   OutVariable = file' -replace 'Copy-DbaDatabase @copySplat','Copy-DbaDatabase @copySplat -WarningAction SilentlyContinue' -replace '''localhost,15593'',"SQL02","SQL03","SQL04","SQL05"' ,'''localhost,15592'',''localhost,15593''' -replace '''localhost,15592''\$instances','$instances' -replace '''''localhost,15593'''',''SQL02'',''SQL03'',''SQL04'',''SQL05''' ,'''localhost,15592'',''localhost,15593''' -replace 'Find-DbaAgentJob -SqlInstance \$instances', '$instances = ''localhost,15592'',''localhost,15593'' ;Find-DbaAgentJob -SqlInstance $instances' -replace 'c:\\temp\\','/tmp/'  -replace '''''localhost,15593''''', '''localhost,15593''' -replace '''SQL02''', '''localhost,15593''' -replace ', SQL2017N20', '' -replace ', "SQL2017N20"', '' -replace 'OwnerLogin = ''ad\\DBA''','OwnerLogin = ''sqladmin''' -replace 'OwnerLogin = ''ad\\FactoryProcesss''','OwnerLogin = ''sqladmin''
   Force = $true' -replace 'Schedule = ''WorkingWeek-Every-3-Hours''', 'Schedule = ''WorkingWeek-Every-15-Minute''' -replace 'Database = ''FactorySales''' , 'Database = ''tempdb''' -replace '
-\s+Description = "Container for AG tests"' ,'' -replace 'D:\\temp','$TestDrive | Select FullName | Out-Host ; Dir $TestDrive' -replace ([Regex]::Escape('\mssql1.AdventureWorks.DataMaskingConfig.json')), '/localhost.15592.AdventureWorks2017.DataMaskingConfig.json' -replace 'Invoke-DbaDbDataMasking -SqlInstance ''localhost,15592'' -Database AdventureWorks2017 -FilePath "$TestDrive/localhost.15592.AdventureWorks2017.DataMaskingConfig.json"' , '$filepath = Join-Path $TestDrive ''localhost.15592.AdventureWorks2017.DataMaskingConfig.json'' ;Invoke-DbaDbDataMasking -SqlInstance ''localhost,15592'' -Database AdventureWorks2017 -FilePath $filepath'
+\s+Description = "Container for AG tests"' ,'' -replace 'D:\\temp','$TestDrive'
 
         [PSCustomObject]@{
             FileName = $file.Name
@@ -122,7 +122,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[19]
             'Start-Transcript',
             'Set-DbaAgentServer',
             'Subsystem = ''CmdExec''',
-            'New-DbaAgentProxy'
+            'New-DbaAgentProxy',
+            'Invoke-DbaDbDataMasking'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
