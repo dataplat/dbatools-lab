@@ -123,7 +123,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[20]
             'Set-DbaAgentServer',
             'Subsystem = ''CmdExec''',
             'New-DbaAgentProxy',
-            'Invoke-DbaDbDataMasking'
+            'Invoke-DbaDbDataMasking',
+            'DbaDac'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
