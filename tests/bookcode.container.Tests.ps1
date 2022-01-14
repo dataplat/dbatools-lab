@@ -39,7 +39,8 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
 \s+OutVariable = file', 'Path = "/tmp/"
   OutVariable = file' -replace 'Copy-DbaDatabase @copySplat','Copy-DbaDatabase @copySplat -WarningAction SilentlyContinue' -replace '''localhost,15593'',"SQL02","SQL03","SQL04","SQL05"' ,'''localhost,15592'',''localhost,15593''' -replace '''localhost,15592''\$instances','$instances' -replace '''''localhost,15593'''',''SQL02'',''SQL03'',''SQL04'',''SQL05''' ,'''localhost,15592'',''localhost,15593''' -replace 'Find-DbaAgentJob -SqlInstance \$instances', '$instances = ''localhost,15592'',''localhost,15593'' ;Find-DbaAgentJob -SqlInstance $instances' -replace 'c:\\temp\\','/tmp/'  -replace '''''localhost,15593''''', '''localhost,15593''' -replace '''SQL02''', '''localhost,15593''' -replace ', SQL2017N20', '' -replace ', "SQL2017N20"', '' -replace 'OwnerLogin = ''ad\\DBA''','OwnerLogin = ''sqladmin''' -replace 'OwnerLogin = ''ad\\FactoryProcesss''','OwnerLogin = ''sqladmin''
   Force = $true' -replace 'Schedule = ''WorkingWeek-Every-3-Hours''', 'Schedule = ''WorkingWeek-Every-15-Minute''' -replace 'Database = ''FactorySales''' , 'Database = ''tempdb''' -replace '
-\s+Description = "Container for AG tests"' ,'' -replace 'D:\\temp','$TestDrive'
+\s+Description = "Container for AG tests"' ,'' -replace 'D:\\temp','$TestDrive' -replace ', sql02, sql03','''localhost,15593''' -replace '
+\s+Start-DbaXESession' , '    Start-DbaXESession'
 
         [PSCustomObject]@{
             FileName = $file.Name
