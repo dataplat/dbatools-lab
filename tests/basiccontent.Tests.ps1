@@ -17,7 +17,25 @@ PS> Add-DbaDbRoleMember @userSplat -User WWI_Readonly -Role db_datareader')), 'P
 ', 'PS> Set-DbaDbState @offlineSplat' -replace '
 PS> New-DbaDbUser @userSplat -Login WWI_ReadOnly', 'PS> New-DbaDbUser @userSplat -Login WWI_ReadOnly' -replace '
 PS> New-DbaLogin @loginSplat -Login WWI_ReadOnly', 'PS> New-DbaLogin @loginSplat -Login WWI_ReadOnly' -replace '
-PS> Backup-DbaDatabase @backupparam', 'Backup-DbaDatabase @backupparam'
+PS> Backup-DbaDatabase @backupparam', 'PS> Backup-DbaDatabase @backupparam' -replace 'New-DbaLogin -SqlInstance SQL01 -Login Factory','New-DbaLogin -SqlInstance SQL01 -Login Factory
+' -replace '
+}
+catch {','}
+catch {' -replace '
+foreach ($replica','
+foreach ($replica' -replace 'replicatocopy"
+','replicatocopy"' -replace '}
+
+try {','}
+try {' -replace '
+PS> \$excel ','PS> $excel ' -replace '
+PS> Add-ConditionalFormatting','PS> Add-ConditionalFormatting' -replace 'Windows PowerShell credential request','
+
+Windows PowerShell credential request' -replace 'Destination "mssql2", "mssql3"','Destination = "mssql2", "mssql3"' -replace '
+PS> Get-DbaDbCompression', 'PS> Get-DbaDbCompression' -replace 'azuretoken
+}
+','azuretoken
+}'
 
         # Once the prep is done, we get all of the code by matching everything between 'PS> ' and 2 new lines and calling it code
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
@@ -49,7 +67,7 @@ PS> Backup-DbaDatabase @backupparam', 'Backup-DbaDatabase @backupparam'
         #        - Return the databases to online for later chapters!!
         #        
 
-        $codelines = $reg.Value -replace '(\n)\[CA\]', ' ' -replace '(\n)\s+\[CA\]', ' ' -replace '----', ''
+        $codelines = $reg.Value -replace '<\d>', ''  -replace '(\n)\[CA\]', ' ' -replace '(\n)\s+\[CA\]', ' ' -replace '----', ''
         # once all of the replacements are done we create an object which has the filename and the code for testing and also the name of the code without the silly double quotes that make it break
         foreach ($codeline in $codelines | Where-Object { $_ -ne ''}) {
             [PSCustomObject]@{
