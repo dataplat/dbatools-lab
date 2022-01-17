@@ -1,7 +1,8 @@
 BeforeDiscovery {
-    # What we are doing here is the preparation for the regex to get all of the code by replacing a few of the line breaks
     $files = Get-ChildItem *chapter*.adoc -Recurse | Select-Object FullName, Name
+
     $tests = foreach ($file in $files) {
+            # What we are doing here is the preparation for the regex to get all of the code by reading the file and replacing a few of the line breaks
         $content = Get-Content $file.FullName -Raw -Verbose
         $content = $content -replace ([Regex]::Escape('PS> Restore-DbaDbSnapshot @splatRestoreSnapshot')), 'PS> Restore-DbaDbSnapshot @splatRestoreSnapshot 
 ' -replace ([Regex]::Escape('PS> $databases <2>')),'PS> $databases
@@ -20,6 +21,31 @@ PS> Backup-DbaDatabase @backupparam', 'Backup-DbaDatabase @backupparam'
 
 # Once the prep is done, we get all of the code by matching everything between 'PS> ' and 2 new lines and calling it code
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
+
+# Nw we play an amazing and awesome game of replace so that the code will run successfully on the GitHub runner in pwsh, against containers
+# In general the following things are done with these replaces
+# - Anything -SqlInstance, SqlInstance = including Source and destination ones are replaced to be localhost, 15592 or 15593
+# - Also any other nefarious sql01 or devsql or other things we add are replaced as well
+# - Also any rogue quotes as we need localhost, 15592 or 15593 in single quotes
+# - Any database references are replaced with pubs (for now) in the same way
+# - Filepaths
+#      - Any internal to the instance file paths are set to /var/opt/mssql/backups
+#      - Any external to the instance file paths are set to /tmp/ or to $TestDrive (Pesters tmp directory)
+#      - Except for sometimes when we need to do different things because of the way we have named things in the book or because PEster goes weird or containers or stuff
+#      - set values for backup files to the ones we precreated in the pipeline
+#      - Change data and log directories to linux paths
+# - Confirmations or interactivity
+#      - Apart from the things we really cant do which are added to the exclusions (see below)
+#      - Adding -Confirm:$false where it can be useful
+#      - Changing Out-GridView or clip to Select *
+# - Logins - Change any owner logins etc to sqladmin as it is easier than setting them all up
+# - Warning Action set to SilentlyContinue for some commands - In General a warning will cause a test failure (because I wanted to see them when building this and Enable Exception makes that much harder to parse)
+#                                                              but sometimes we need to add SilentlyContinue because we dont care about out of date build cache or that we need to restart to apply SpCOnfigure changes
+# - Exclusions
+#        - Exclude Copy Settings that are not valid on Linux or Containers
+#        - Exclude Databases for some of the backup and restore tasks
+# - Credentials get removed so we dont get prompted or get replaced with the default one we use
+#        
 
         $codelines = $reg.Value -replace '<\d>','' -replace ([Regex]::Escape('Test-DbaConnection -SqlInstance $Env:ComputerName')),'Test-DbaConnection -SqlInstance ''localhost,15592''' -replace 'PageRestoreTailFolder = "c:\\temp"','PageRestoreTailFolder = "/var/opt/mssql/backups"' -replace '\\\\nas\\sql01\\mydb01.bak','/var/opt/mssql/backups/pubs.bak' -replace 'PS> ', '' -replace '(\n)\[CA\]', ' ' -replace '(\n)\s+\[CA\]', ' ' -replace '----', '' -replace '(-SqlInstance\s\w*)', '-SqlInstance ''localhost,15592''' -replace '(-Database\s\w*)', '-Database AdventureWorks2017' -replace '(Database\s+=\s"\w*")', 'Database = "AdventureWorks2017"' -replace '(SqlInstance\s+=\s("\w*"|\$\w*))', 'SqlInstance = ''localhost,15592''' -replace  '\\sql2017' , '' -replace  '\\SHAREPOINT' , '' -replace '\\\\nas\\sql\\backups\\sql01', '/var/opt/mssql/backups'  -replace '\\\\nas\\sql\\sql01\\mydb', '/var/opt/mssql/backups' -replace 'C:\\dbatoolslab\\Backup\\', '/var/opt/mssql/backups/' -replace '\\\\nas\\sqlbackups', '/var/opt/mssql/backups' -replace '\\\\nas\\sql\\backups', '/var/opt/mssql/backups' -replace '(SqlInstance\s+=\s"dbatoolslab")', 'SqlInstance = ''localhost,15592''' -replace '"PRODSQL01", "PRODSQL02", "PRODSQL03\\ShoeFactory"', '''localhost,15592'',''localhost,15593''' -replace 'PRODSQL02, PRODSQL03\\ShoeFactory', '"localhost,15593"' -replace 'sql2005', '"localhost,15593"' -replace '(\n)-Table',' -Table' -replace '''localhost,15592''$instances', '$instances' -replace 'clip','Select *' -replace 'SQLDEV02,15591',"'localhost,15593'" -replace '"sql01"',"'localhost,15593'" -replace 'sql01',"'localhost,15593'" -replace 'sql2008',"'localhost,15592'" -replace 'DestinationDatabase = ''WIP''','DestinationDatabase = ''tempdb'''  -replace '(\n)-Database',' -Database' -replace '//JP','#//JP' -replace '(\n)        FROM \[AzureVMs\]',' FROM AzureVMs' -replace '(\n)        ,\[StatusCode\]',', StatusCode ' -replace '(\n)        ,\[PowerState\]', ', PowerState ' -replace '(\n)        ,\[Location\]',', Location ' -replace '''localhost,15592''\$sqlconfiginstance', '''localhost,15592'' ' -replace 'Path "C:\\temp"', 'Path = "/tmp/"'  -replace 'Find-DbaBackup -Path /var/opt/mssql/backups','Find-DbaBackup -Path /tmp/backups' -replace '(\n\tSourceServer)', 'SourceServer' -replace '(\n\tTestServer)','TestServer' -replace '(\n\t\[Database\])' , 'Database' -replace '(\n\tFileExists)' , 'FileExists' -replace '(\n\tSize)' , 'Size' -replace '(\n\tRestoreResult)' , 'RestoreResult' -replace '(\n\tDbccResult)' , 'DbccResult' -replace '(\n\tRestoreStart)' , 'RestoreStart' -replace '(\n\tRestoreEnd)' , 'RestoreEnd' -replace '(\n\tRestoreElapsed)' , 'RestoreElapsed' -replace '(\n\tDbccStart)' , 'DbccStart' -replace '(\n\tDbccEnd)' , 'DbccEnd' -replace '(\n\tDbccElapsed)' , 'DbccElapsed' -replace '(\n\tBackupDates)' , 'BackupDates' -replace '(\n\tBackupFiles)' , 'BackupFiles' -replace '-Path S:\\backups\\pubs.bak', '-Path /var/opt/mssql/backups/pubs.bak  -WithReplace -Confirm:$false' -replace 'C:\\temp\\sql\\full.bak','/var/opt/mssql/backups/pubs.bak' -replace 'C:\\temp\\full.bak','/var/opt/mssql/backups/pubs.bak' -replace 'C:\\temp\\sql\\trans.trn','/var/opt/mssql/backups/pubs.trn' -replace 'C:\\temp\\sql' , '/var/opt/mssql/backups'  -replace 'New-Item -Path ''/var/opt/mssql/backups''','# New-Item -Path ''/var/opt/mssql/backups''' -replace 'ExcludeDatabase = "AdventureWorks2017"', 'ExcludeDatabase = "tempdb", "NorthWind", "AdventureWorks2017","WideWorldImporters"'  -replace 'diff.bak','pubsdiff.bak' -replace 'trans.trn','pubs.trn'  -replace 'splatRestoreDbContinue','splatRestoreDb' -replace 'DestinationDataDirectory = "D:\\data"','WithReplace = $true;DestinationDataDirectory = "/var/opt/mssql/data"' -replace 'DestinationLogDirectory = "L:\\log"','DestinationLogDirectory = "/var/opt/mssql/data"' -replace 'NoRecovery = ','WithReplace = $true;NoRecovery = ' -replace ([regex]::Escape('Restore-DbaDatabase @splatRestoreDb -Path /var/opt/mssql/backups\pubsdiff.bak')),'Restore-DbaDatabase @splatRestoreDb -Path /var/opt/mssql/backups\pubsdiff.bak -Continue' -replace ([regex]::Escape('RestoreTime = (Get-Date "2019-05-02 21:12:27")')),'RestoreTime = (Get-Date "2019-05-02 21:12:27") ; Continue = $true;WarningAction = ''SilentlyContinue''' -replace ([regex]::Escape('Path = "C:\temp')), 'Path = "/var/opt/mssql/backups' -replace 'from Databases', 'from sys.tables' -replace 'Get-DbaBuildReference','Get-DbaBuildReference -WarningAction SilentlyContinue' -replace 'Test-DbaBuild','Test-DbaBuild -WarningAction SilentlyContinue'
         $codelines = $codelines -replace '\s+Database = "AdventureWorks2017"
@@ -49,6 +75,7 @@ WarningAction = ''SilentlyContinue'''  -replace  '\$tableSplat = @{
 Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')),'$sqlcred.Password' -replace ([Regex]::Escape('EncryptionPassword = $securepass')),'EncryptionPassword = $sqlcred.Password
 DecryptionPassword = $sqlcred.Password' -replace 'New-DbaDbMasterKey @params','New-DbaDbMasterKey @params -Confirm:$false' -replace 'c:\\backups','/tmp' -replace 'c:\\backups\\','/tmp/' -replace 'EncryptionAlgorithm = AES192', ' EncryptionAlgorithm = ''AES192''' 
 
+# once all of the replacements are done we create an object which has the filename and the code for testing
         [PSCustomObject]@{
             FileName = $file.Name
             Code     = $codelines
@@ -56,12 +83,12 @@ DecryptionPassword = $sqlcred.Password' -replace 'New-DbaDbMasterKey @params','N
     }
 }
 
-Describe "Checking the file <_.Name> code works as intended" -ForEach $files[22] {
+Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
     $filename = $_.Name
 
     It "The code <_> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
         $code = $_
-        # some code that should not be run on containers or on linux or are asking for input
+        # We exclude these commands that should not be run on containers or on linux or are asking for input or otherwise dont work in some way
         $exclusions = @(
             'Invoke-Command -ComputerName',
             'Install-DbaInstance',
@@ -149,12 +176,12 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files[22]
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
             $code = 'Write-Host "We cant run this code here! It is in the exclusion list {0}"' -f $code[0..30] -join ''
         }
+        # now we create a scriptblock with a default cred for all possible cred params and set warning action to stop so that they fail the test and add in the code
         $scriptblock = [scriptblock]::Create("
         `$secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
         `$sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', `$secStringPassword);
         `$PSDefaultParameterValues = @{'*dba*:SqlCredential' = `$sqlcred;'*:WarningAction' = 'Stop';'*dba*:DestinationSqlCredential' = `$sqlcred;'*dba*:SourceSqlCredential' = `$sqlcred;}; $code")
-        # $scriptblock = [scriptblock]::Create("`$PSDefaultParameterValues = @{'*:WarningAction' = 'Stop'}; $code")
+
          $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
-        # $true | Should -BeTrue
     }
 } 
