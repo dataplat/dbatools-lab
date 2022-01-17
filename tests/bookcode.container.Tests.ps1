@@ -180,4 +180,9 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
 
         $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
     }
+    AfterAll {
+        $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
+        $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword);
+        Get-DbaDatabase -SqlInstance 'localhost,15592' -SqlCredential $sqlcred | Select Name, RecoveryModel, Status  | Out-Host
+    }
 } 
