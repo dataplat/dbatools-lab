@@ -31,7 +31,7 @@ jobs:
           cd book
           git clone https://oauth2:${{ secrets.GITLABTOKEN }}@git.manning.com/agileauthor/leMaire.git 
 
-      - name: Get some code from the book and test it on the containers
+      - name: Get all of that code and check that it is correct
         run: | 
           Remove-Module Pester -ErrorAction SilentlyContinue
           Import-Module Pester -MinimumVersion 5.3.1
