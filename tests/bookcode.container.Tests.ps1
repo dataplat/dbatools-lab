@@ -67,15 +67,15 @@ WarningAction = ''SilentlyContinue'''  -replace '\$tableSplat = @{
 \s+Description = "Container for AG tests"' , '' -replace 'D:\\temp', '$TestDrive' -replace ' sql02, sql03', '''localhost,15593''' -replace '
 \s+Start-DbaXESession' , ' Select *  # Start-DbaXESession' -replace '\s+Source = "mssql1"
 \s+Destination "mssql2", "mssql3"', '    Source = ''localhost,15592''
-Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')), '$sqlcred.Password' -replace ([Regex]::Escape('
-(\s+)Database = "AdventureWorks2017"
-(\s+)EncryptionPassword = $securepass')), '
+Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')), '$sqlcred.Password' -replace '
+\s+Database = "AdventureWorks2017"
+\s+EncryptionPassword = \$securepass', '
 Database = "Master"
 EncryptionPassword = $sqlcred.Password
-DecryptionPassword = $sqlcred.Password' -replace ([Regex]::Escape('Database = "AdventureWorks2017"
-(\s+)SecurePassword = $securepass
+DecryptionPassword = $sqlcred.Password' -replace 'Database = "AdventureWorks2017"
+\s+SecurePassword = \$securepass
 }
-New-DbaDbMasterKey @params')), '
+New-DbaDbMasterKey @params', '
 Database = "Master"
     SecurePassword = $securepass
 }
