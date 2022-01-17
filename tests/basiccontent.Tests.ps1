@@ -25,7 +25,7 @@ catch {' -replace '
 foreach \(\$replica','foreach ($replica' -replace 'replicatocopy"
 ','replicatocopy"' -replace '}
 
-try {','}
+\s+try {','}
 try {' -replace '
 PS> \$excel ','PS> $excel ' -replace '
 PS> Add-ConditionalFormatting','PS> Add-ConditionalFormatting' -replace 'Windows PowerShell credential request','
@@ -34,7 +34,13 @@ Windows PowerShell credential request' -replace 'Destination "mssql2", "mssql3"'
 PS> Get-DbaDbCompression', 'PS> Get-DbaDbCompression' -replace 'azuretoken
 }
 ','azuretoken
-}'
+}' -replace '
+PS> Get-DbaBuildReference -SqlInstance \$sqlinstances ','PS> Get-DbaBuildReference -SqlInstance $sqlinstances ' -replace '
+PS> Get-DbaComputerSystem -ComputerName \$sqlhosts ','PS> Get-DbaComputerSystem -ComputerName $sqlhosts ' -replace '
+PS> Get-DbaOperatingSystem -ComputerName \$sqlhosts ','PS> Get-DbaOperatingSystem -ComputerName $sqlhosts ' -replace '
+PS> Get-DbaDatabase -SqlInstance \$sqlinstances ','PS> Get-DbaDatabase -SqlInstance $sqlinstances ' -replace '
+PS> Find-DbaUserObject -SqlInstance \$sqlinstances ','PS> Find-DbaUserObject -SqlInstance $sqlinstances ' -replace '
+PS> New-DbaAgentProxy @proxysplat','PS> New-DbaAgentProxy @proxysplat' -replace 'Query "select * from customers"','Query = "select * from customers"'
 
         # Once the prep is done, we get all of the code by matching everything between 'PS> ' and 2 new lines and calling it code
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
