@@ -145,14 +145,14 @@ Describe "Testing the chapter <_.Name>" -ForEach $files {
     #It "The code <_.CodeName> should be valid with Tobias Checks" -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
     #    Test-PowerShellCode -Code $_.Code | SHould -BeTrue
     #}
-    It "The code <_.Code> splats should match"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
+    It "The code <_.CodeName> splats should match"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
         $code = $_.Code
         $scriptblock = [scriptblock]::Create("$code")
         $ast = $scriptblock.Ast
         $variableexpressions = $ast.FindAll( { $args[0] -is [System.Management.Automation.Language.VariableExpressionAst] }, $true)
 
         foreach ($splatted in ($variableexpressions | Where Splatted )) {
-            $splatted.VariablePath.UserPath -in ($variableexpressions | Where Splatted -eq $false).VariablePath.UserPath | Should -BeTrue
+            $splatted.VariablePath.UserPath -in ($variableexpressions | Where Splatted -eq $false).VariablePath.UserPath | Should -BeTrue -Because "$Code splats are not right"
         } 
     }
 }
