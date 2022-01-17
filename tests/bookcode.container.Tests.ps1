@@ -169,7 +169,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
             'Set-DbaExtendedProtection',
             'Enable-DbaHideInstance',
             'SET ENCRYPTION ON',
-            'dbc'
+            'Dbc'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
