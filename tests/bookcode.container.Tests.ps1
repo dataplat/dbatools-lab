@@ -67,8 +67,26 @@ WarningAction = ''SilentlyContinue'''  -replace '\$tableSplat = @{
 \s+Description = "Container for AG tests"' , '' -replace 'D:\\temp', '$TestDrive' -replace ' sql02, sql03', '''localhost,15593''' -replace '
 \s+Start-DbaXESession' , ' Select *  # Start-DbaXESession' -replace '\s+Source = "mssql1"
 \s+Destination "mssql2", "mssql3"', '    Source = ''localhost,15592''
-Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')), '$sqlcred.Password' -replace ([Regex]::Escape('EncryptionPassword = $securepass')), 'EncryptionPassword = $sqlcred.Password
-DecryptionPassword = $sqlcred.Password' -replace 'New-DbaDbMasterKey @params', 'New-DbaDbMasterKey @params -Confirm:$false' -replace 'c:\\backups', '/tmp' -replace 'c:\\backups\\', '/tmp/' -replace 'EncryptionAlgorithm = AES192', ' EncryptionAlgorithm = ''AES192''' -replace '-Description = "Container for AG tests"', '-Description "Container for AG tests"' -replace 'git', '#' -replace 'Invoke-DbaDbPiiScan ', 'Invoke-DbaDbPiiScan -WarningAction SilentlyContinue ' -replace 'New-DbaDbMaskingConfig ','New-DbaDbMaskingConfig -WarningAction SilentlyContinue ' -replace ' Remove-DbaDbSnapshot',' Remove-DbaDbSnapshot -Confirm:$false' -replace 'Get-Command -Module dbatools -Verb Copy' ,'Get-Command -Module dbatools -Verb Copy;
+Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')), '$sqlcred.Password' -replace ([Regex]::Escape('
+(\s+)Database = "AdventureWorks2017"
+(\s+)EncryptionPassword = $securepass')), '
+Database = "Master"
+EncryptionPassword = $sqlcred.Password
+DecryptionPassword = $sqlcred.Password' -replace ([Regex]::Escape('Database = "AdventureWorks2017"
+(\s+)SecurePassword = $securepass
+}
+New-DbaDbMasterKey @params')), '
+Database = "Master"
+    SecurePassword = $securepass
+}
+New-DbaDbMasterKey @params -Confirm:$false' -replace '\s+Database = "AdventureWorks2017"
+\s+FilePath = "/tmp"
+\s+EncryptionAlgorithm = ''AES192''
+\s+EncryptionCertificate = "BackupCert"
+' , '  Database = "Master"
+FilePath = "/tmp"
+EncryptionAlgorithm = ''AES192''
+EncryptionCertificate = "BackupCert"' -replace 'c:\\backups', '/tmp' -replace 'c:\\backups\\', '/tmp/' -replace 'EncryptionAlgorithm = AES192', ' EncryptionAlgorithm = ''AES192''' -replace '-Description = "Container for AG tests"', '-Description "Container for AG tests"' -replace 'git', '#' -replace 'Invoke-DbaDbPiiScan ', 'Invoke-DbaDbPiiScan -WarningAction SilentlyContinue ' -replace 'New-DbaDbMaskingConfig ', 'New-DbaDbMaskingConfig -WarningAction SilentlyContinue ' -replace ' Remove-DbaDbSnapshot', ' Remove-DbaDbSnapshot -Confirm:$false' -replace 'Get-Command -Module dbatools -Verb Copy' , 'Get-Command -Module dbatools -Verb Copy;
 Get-DbaDatabase ''localhost,15592'' -Status Offline | Set-DbaDbState -Online '
 
         # once all of the replacements are done we create an object which has the filename and the code for testing and also the name of the code without the silly double quotes that make it break
