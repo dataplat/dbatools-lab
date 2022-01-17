@@ -22,7 +22,7 @@ PS> Backup-DbaDatabase @backupparam', 'PS> Backup-DbaDatabase @backupparam' -rep
 }
 catch {','}
 catch {' -replace '
-foreach ($replica','
+foreach (\$replica','
 foreach ($replica' -replace 'replicatocopy"
 ','replicatocopy"' -replace '}
 
