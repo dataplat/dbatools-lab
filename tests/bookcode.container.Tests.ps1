@@ -16,7 +16,7 @@ PS> Add-DbaDbRoleMember @userSplat -User WWI_Readonly -Role db_datareader')),'PS
 ', 'PS> Set-DbaDbState @offlineSplat' -replace '
 PS> New-DbaDbUser @userSplat -Login WWI_ReadOnly', 'PS> New-DbaDbUser @userSplat -Login WWI_ReadOnly' -replace '
 PS> New-DbaLogin @loginSplat -Login WWI_ReadOnly','PS> New-DbaLogin @loginSplat -Login WWI_ReadOnly' -replace '
-Backup-DbaDatabase @backupparam', 'Backup-DbaDatabase @backupparam'
+PS> Backup-DbaDatabase @backupparam', 'Backup-DbaDatabase @backupparam'
 
 # Once the prep is done, we get all of the code by matching everything between 'PS> ' and 2 new lines and calling it code
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
