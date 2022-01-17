@@ -75,10 +75,13 @@ WarningAction = ''SilentlyContinue'''  -replace '\$tableSplat = @{
 Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')), '$sqlcred.Password' -replace ([Regex]::Escape('EncryptionPassword = $securepass')), 'EncryptionPassword = $sqlcred.Password
 DecryptionPassword = $sqlcred.Password' -replace 'New-DbaDbMasterKey @params', 'New-DbaDbMasterKey @params -Confirm:$false' -replace 'c:\\backups', '/tmp' -replace 'c:\\backups\\', '/tmp/' -replace 'EncryptionAlgorithm = AES192', ' EncryptionAlgorithm = ''AES192''' -replace '-Description = "Container for AG tests"', '-Description "Container for AG tests"'
 
-# once all of the replacements are done we create an object which has the filename and the code for testing
-        [PSCustomObject]@{
-            FileName = $file.Name
-            Code     = $codelines
+        # once all of the replacements are done we create an object which has the filename and the code for testing and also the name of the code without the silly double quotes that make it break
+        foreach ($codeline in $codelines) {
+            [PSCustomObject]@{
+                FileName = $file.Name
+                Code     = $codeline
+                CodeName = ($codeline[0..30] -join '' -replace '"', ' ')
+            }
         }
     }
 }
@@ -86,8 +89,8 @@ DecryptionPassword = $sqlcred.Password' -replace 'New-DbaDbMasterKey @params', '
 Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
     $filename = $_.Name
 
-    It "The code <_[0..30] -join ''> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }).Code {
-        $code = $_
+    It "The code <_.CodeName> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
+        $code = $_.Code 
         # We exclude these commands that should not be run on containers or on linux or are asking for input or otherwise dont work in some way
         $exclusions = @(
             'Invoke-Command -ComputerName',
@@ -182,6 +185,6 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
         `$sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', `$secStringPassword);
         `$PSDefaultParameterValues = @{'*dba*:SqlCredential' = `$sqlcred;'*:WarningAction' = 'Stop';'*dba*:DestinationSqlCredential' = `$sqlcred;'*dba*:SourceSqlCredential' = `$sqlcred;}; $code")
 
-         $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
+        $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
     }
 } 
