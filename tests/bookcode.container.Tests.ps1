@@ -66,7 +66,7 @@ WarningAction = ''SilentlyContinue'''  -replace '\$tableSplat = @{
   Force = $true' -replace 'Schedule = ''WorkingWeek-Every-3-Hours''', 'Schedule = ''WorkingWeek-Every-15-Minute''' -replace 'Database = ''FactorySales''' , 'Database = ''tempdb''' -replace '
 \s+Description = "Container for AG tests"' , '' -replace 'D:\\temp', '$TestDrive' -replace ' sql02, sql03', '''localhost,15593''' -replace '
 \s+Start-DbaXESession' , ' Select *  # Start-DbaXESession' -replace '\s+Source = "mssql1"
-\s+Destination "mssql2", "mssql3"', '    Source = ''localhost,15592''
+\s+Destination = "mssql2", "mssql3"', '    Source = ''localhost,15592''
 Destination = ''localhost,15593''' -replace ([Regex]::Escape('(Get-Credential doesntmatter).Password')), '$sqlcred.Password' -replace '
 \s+Database = "AdventureWorks2017"
 \s+EncryptionPassword = \$securepass', '
