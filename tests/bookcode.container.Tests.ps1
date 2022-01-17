@@ -177,7 +177,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
         If (($exclusions | ForEach-Object { $code.contains($_) }) -contains $true) {
-            $code = 'Write-Host "We cant run this code here! {0} is in the exclusion list "' -f ($code[0..30] -join '')
+            $code = 'Write-Host "We cant run this code here! {0} is in the exclusion list "' -f ($code[0..30] -join '' -replace '"', ' ')
         }
         # now we create a scriptblock with a default cred for all possible cred params and set warning action to stop so that they fail the test and add in the code
         $scriptblock = [scriptblock]::Create("
