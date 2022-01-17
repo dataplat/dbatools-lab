@@ -40,7 +40,7 @@ PS> Get-DbaComputerSystem -ComputerName \$sqlhosts ','PS> Get-DbaComputerSystem 
 PS> Get-DbaOperatingSystem -ComputerName \$sqlhosts ','PS> Get-DbaOperatingSystem -ComputerName $sqlhosts ' -replace '
 PS> Get-DbaDatabase -SqlInstance \$sqlinstances ','PS> Get-DbaDatabase -SqlInstance $sqlinstances ' -replace '
 PS> Find-DbaUserObject -SqlInstance \$sqlinstances ','PS> Find-DbaUserObject -SqlInstance $sqlinstances ' -replace '
-PS> New-DbaAgentProxy @proxysplat','PS> New-DbaAgentProxy @proxysplat' -replace 'Query "select * from customers"','Query = "select * from customers"'
+PS> New-DbaAgentProxy @proxysplat','PS> New-DbaAgentProxy @proxysplat' -replace 'Query "select \* from customers"','Query = "select * from customers"'
 
         # Once the prep is done, we get all of the code by matching everything between 'PS> ' and 2 new lines and calling it code
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
