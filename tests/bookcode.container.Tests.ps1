@@ -103,7 +103,7 @@ Get-DbaDatabase ''localhost,15592'' -Status Offline | Set-DbaDbState -Online '
 Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
     $filename = $_.Name
 
-    It "The code <_.CodeName> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
+    It "In $filename The code <_.CodeName> should not error"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
         $code = $_.Code 
         # We exclude these commands that should not be run on containers or on linux or are asking for input or otherwise dont work in some way
         $exclusions = @(
@@ -204,8 +204,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
         $scriptblock | Should -Not -Throw -Because "$scriptblock  - should not throw"
     }
     AfterAll {
-        $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
-        $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword);
-        Get-DbaDatabase -SqlInstance 'localhost,15592' -SqlCredential $sqlcred | Select Name, RecoveryModel, Status  | Out-Host
+        # $secStringPassword = ConvertTo-SecureString -String 'dbatools.IO' -AsPlainText -Force;
+        # $sqlcred = New-Object System.Management.Automation.PSCredential ('sqladmin', $secStringPassword);
+        # Get-DbaDatabase -SqlInstance 'localhost,15592' -SqlCredential $sqlcred | Select Name, RecoveryModel, Status  | Out-Host
     }
 } 
