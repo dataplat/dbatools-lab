@@ -125,7 +125,7 @@ PS> New-DbaAgentProxy @proxysplat', 'PS> New-DbaAgentProxy @proxysplat' -replace
 
         # Once the prep is done, we get all of the code by matching everything between 'PS> ' and 2 new lines and calling it code
         $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
-
+        $codelines = $reg.Value
         # once all of the replacements are done we create an object which has the filename and the code for testing and also the name of the code without the silly double quotes that make it break
         foreach ($codeline in ($codelines | Where-Object { $_ -ne '' }) -split '\n') {
             [PSCustomObject]@{
