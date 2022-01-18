@@ -189,16 +189,16 @@ Describe "Testing the chapter <_.Name>" -ForEach $files {
         }
     }
     $filename = $_.Name
-    It "The code <_.CodeName> should not have backticks"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
+    It "In $filename The code <_.CodeName> should not have backticks"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
         $_.Code | Should -Not -Match ([regex]::Escape('`'))
     }
-    It "The code <_.CodeName> should be valid - (as good as we can check anyway)" -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
+    It "In $filename The code <_.CodeName> should be valid - (as good as we can check anyway)" -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
         Test-Syntax -Code $_.Code  | SHould -BeTrue
     }
-    It "The code <_.CodeName> should be valid with Tobias Checks" -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
+    It "In $filename The code <_.CodeName> should be valid with Tobias Checks" -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
         Test-PowerShellCode -Code $_.Code | SHould -BeTrue
     }
-    It "The code <_.CodeName> splats should match"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
+    It "In $filename The code <_.CodeName> splats should match"  -ForEach @($tests | Where-Object { $_.FileName -eq $filename }) {
         $code = $_.Code
         $scriptblock = [scriptblock]::Create("$code")
         $ast = $scriptblock.Ast
@@ -208,7 +208,7 @@ Describe "Testing the chapter <_.Name>" -ForEach $files {
             $splatted.VariablePath.UserPath -in ($variableexpressions | Where Splatted -eq $false).VariablePath.UserPath | Should -BeTrue -Because "$Code splats are not right"
         } 
     }
-    It "The Code line <_.Code> should be no longer than 76 characters per line"  -ForEach @($rawtests | Where-Object { $_.FileName -eq $filename }) {
+    It "In $filename The Code line <_.Code> should be no longer than 76 characters per line"  -ForEach @($rawtests | Where-Object { $_.FileName -eq $filename }) {
         $_.Code.Length | Should -BeLessOrEqual 76
     }
 }

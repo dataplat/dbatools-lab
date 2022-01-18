@@ -36,5 +36,5 @@ jobs:
           Remove-Module Pester -ErrorAction SilentlyContinue
           Import-Module Pester -MinimumVersion 5.3.1
           cd book
-          Invoke-Pester ../tests/basiccontent.Tests.ps1 -Output Detailed
+          Invoke-Pester ../tests/basiccontent.Tests.ps1 # -Output Detailed
         shell: pwsh
