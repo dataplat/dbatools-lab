@@ -22,7 +22,7 @@ jobs:
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v4
         with:
-          modules-to-cache: dbatools, Pester:5.3.1
+          modules-to-cache:  Pester:5.3.1
 
 
       - name: Clone the Book Repo 
