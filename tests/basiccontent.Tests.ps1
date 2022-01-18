@@ -209,6 +209,6 @@ Describe "Testing the chapter <_.Name>" -ForEach $files {
         } 
     }
     It "The Code line <_.Code> should be no longer than 76 characters per line"  -ForEach @($rawtests | Where-Object { $_.FileName -eq $filename }) {
-        $_.Length | Should -BeLessOrEqual 76
+        $_.Code.Length | Should -BeLessOrEqual 76
     }
 }
