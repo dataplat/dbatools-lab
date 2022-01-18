@@ -82,6 +82,59 @@ PS> New-DbaAgentProxy @proxysplat', 'PS> New-DbaAgentProxy @proxysplat' -replace
             }
         }
     }
+    $rawtests = foreach ($file in $files) {
+        # What we are doing here is the preparation for the regex to get all of the code by reading the file and replacing a few of the line breaks
+        $content = Get-Content $file.FullName -Raw -Verbose
+        $content = $content -replace ([Regex]::Escape('PS> Restore-DbaDbSnapshot @splatRestoreSnapshot')), 'PS> Restore-DbaDbSnapshot @splatRestoreSnapshot 
+' -replace ([Regex]::Escape('PS> $databases <2>')), 'PS> $databases
+' -replace ([Regex]::Escape('WARNING')), '
+WARNING' -replace ([Regex]::Escape('----')), '
+----' -replace ([Regex]::Escape('PS> $Env:PSModulePath -Split ";"')), 'PS> $Env:PSModulePath -Split ";"
+' -replace ([Regex]::Escape('PS> docker ps')), 'PS> docker ps
+' -replace ([Regex]::Escape('
+PS> Add-DbaDbRoleMember @userSplat -User WWI_Readonly -Role db_datareader')), 'PS> Add-DbaDbRoleMember @userSplat -User WWI_Readonly -Role db_datareader' -replace ([Regex]::Escape('PS> Import-DbaSpConfigure @splatExportSpConf')), 'PS> Import-DbaSpConfigure @splatExportSpConf
+' -replace 'PS> \$diff = Backup-DbaDatabase @diffSplat
+', 'PS> $diff = Backup-DbaDatabase @diffSplat' -replace 'PS> Set-DbaDbState @offlineSplat
+', 'PS> Set-DbaDbState @offlineSplat' -replace '
+PS> New-DbaDbUser @userSplat -Login WWI_ReadOnly', 'PS> New-DbaDbUser @userSplat -Login WWI_ReadOnly' -replace '
+PS> New-DbaLogin @loginSplat -Login WWI_ReadOnly', 'PS> New-DbaLogin @loginSplat -Login WWI_ReadOnly' -replace '
+PS> Backup-DbaDatabase @backupparam', 'PS> Backup-DbaDatabase @backupparam' -replace 'New-DbaLogin -SqlInstance SQL01 -Login Factory', 'New-DbaLogin -SqlInstance SQL01 -Login Factory
+' -replace '
+}
+catch {', '}
+catch {' -replace '
+foreach \(\$replica', 'foreach ($replica' -replace 'replicatocopy"
+', 'replicatocopy"' -replace '}
+
+\s+try {', '}
+try {' -replace '
+PS> \$excel ', 'PS> $excel ' -replace '
+PS> Add-ConditionalFormatting', 'PS> Add-ConditionalFormatting' -replace 'Windows PowerShell credential request', '
+
+Windows PowerShell credential request' -replace 'Destination "mssql2", "mssql3"', 'Destination = "mssql2", "mssql3"' -replace '
+PS> Get-DbaDbCompression', 'PS> Get-DbaDbCompression' -replace 'azuretoken
+}
+', 'azuretoken
+}' -replace '
+PS> Get-DbaBuildReference -SqlInstance \$sqlinstances ', 'PS> Get-DbaBuildReference -SqlInstance $sqlinstances ' -replace '
+PS> Get-DbaComputerSystem -ComputerName \$sqlhosts ', 'PS> Get-DbaComputerSystem -ComputerName $sqlhosts ' -replace '
+PS> Get-DbaOperatingSystem -ComputerName \$sqlhosts ', 'PS> Get-DbaOperatingSystem -ComputerName $sqlhosts ' -replace '
+PS> Get-DbaDatabase -SqlInstance \$sqlinstances ', 'PS> Get-DbaDatabase -SqlInstance $sqlinstances ' -replace '
+PS> Find-DbaUserObject -SqlInstance \$sqlinstances ', 'PS> Find-DbaUserObject -SqlInstance $sqlinstances ' -replace '
+PS> New-DbaAgentProxy @proxysplat', 'PS> New-DbaAgentProxy @proxysplat' -replace 'Query "select \* from customers"', 'Query = "select * from customers"'
+
+        # Once the prep is done, we get all of the code by matching everything between 'PS> ' and 2 new lines and calling it code
+        $reg = [regex]::matches($content, "PS>\s(?<code>[\s\S]*?(?=(\r\n?|\n){2,}))").Groups.Where( { $_.Name -eq 'code' })
+
+        # once all of the replacements are done we create an object which has the filename and the code for testing and also the name of the code without the silly double quotes that make it break
+        foreach ($codeline in ($codelines | Where-Object { $_ -ne '' }) -split '\n') {
+            [PSCustomObject]@{
+                FileName = $file.Name
+                Code     = $codeline
+                CodeName = ($codeline[0..30] -join '' -replace '"', ' ')
+            }
+        }
+    }
 }
 
 
@@ -154,5 +207,8 @@ Describe "Testing the chapter <_.Name>" -ForEach $files {
         foreach ($splatted in ($variableexpressions | Where Splatted )) {
             $splatted.VariablePath.UserPath -in ($variableexpressions | Where Splatted -eq $false).VariablePath.UserPath | Should -BeTrue -Because "$Code splats are not right"
         } 
+    }
+    It "The Code line <_.Code> should be no longer than 76 characters per line"  -ForEach @($rawtests | Where-Object { $_.FileName -eq $filename }) {
+        $_.Length | Should -BeLessOrEqual 76
     }
 }
