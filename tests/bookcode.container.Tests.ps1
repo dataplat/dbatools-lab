@@ -87,7 +87,7 @@ New-DbaDbMasterKey @params -Confirm:$false' -replace '\s+Database = "AdventureWo
 FilePath = "/tmp"
 EncryptionAlgorithm = ''AES192''
 EncryptionCertificate = "BackupCert"' -replace 'c:\\backups', '/tmp' -replace 'c:\\backups\\', '/tmp/' -replace 'EncryptionAlgorithm = AES192', ' EncryptionAlgorithm = ''AES192''' -replace '-Description = "Container for AG tests"', '-Description "Container for AG tests"' -replace 'git', '#' -replace 'Invoke-DbaDbPiiScan ', 'Invoke-DbaDbPiiScan -WarningAction SilentlyContinue ' -replace 'New-DbaDbMaskingConfig ', 'New-DbaDbMaskingConfig -WarningAction SilentlyContinue ' -replace ' Remove-DbaDbSnapshot', ' Remove-DbaDbSnapshot -Confirm:$false' -replace 'Get-Command -Module dbatools -Verb Copy' , 'Get-Command -Module dbatools -Verb Copy;
-Get-DbaDatabase ''localhost,15592'' -Status Offline | Set-DbaDbState -Online '
+Get-DbaDatabase ''localhost,15592'' -Status Offline | Set-DbaDbState -Online ' -replace ([Regex]::Escape(':12345')),'' -replace ([Regex]::Escape(':12345')),'' -replace ([Regex]::Escape(',12345')),''
 
         # once all of the replacements are done we create an object which has the filename and the code for testing and also the name of the code without the silly double quotes that make it break
         foreach ($codeline in $codelines) {
