@@ -196,7 +196,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
             'Start-DbaMigration',
             'DbaComputerCertificate',
             '12345',
-            'Test-DbaBackupEncypted'
+            'Test-DbaBackupEncypted',
+            'Disable-DbaDbEncryption'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
