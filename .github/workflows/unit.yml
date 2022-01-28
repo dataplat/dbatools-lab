@@ -29,7 +29,7 @@ jobs:
         run: | 
           mkdir book
           cd book
-          git clone -b pester-error-fixes https://oauth2:${{ secrets.GITLABTOKEN }}@git.manning.com/agileauthor/leMaire.git 
+          git clone https://oauth2:${{ secrets.GITLABTOKEN }}@git.manning.com/agileauthor/leMaire.git 
 
       - name: Get all of that code and check that it is correct
         run: | 
