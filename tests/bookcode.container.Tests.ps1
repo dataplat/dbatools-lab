@@ -188,7 +188,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
             'SET ENCRYPTION ON',
             'Dbc',
             'PiiScan',
-            'EncryptionCertificate'
+            'EncryptionCertificate',
+            'DbaSpn'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
