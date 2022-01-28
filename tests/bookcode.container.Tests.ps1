@@ -197,7 +197,9 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
             'DbaComputerCertificate',
             '12345',
             'Test-DbaBackupEncypted',
-            'Disable-DbaDbEncryption'
+            'Disable-DbaDbEncryption',
+            'New-DbaDbCertificate @splatCert -Name BackupCert',
+            'Backup-DbaDbCertificate @splatCert -Certificate BackupCert'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
