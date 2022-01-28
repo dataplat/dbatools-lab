@@ -160,6 +160,7 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
             'Update-DbaInstance',
             '11112019080741',
             'DetachAttach  = $true',
+            'Reattach         = $true',
             'Copy-DbaLinkedServer',
             'Remove-DbaDbTable',
             'ad\factoryauditors',
