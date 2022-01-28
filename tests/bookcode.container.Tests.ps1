@@ -189,7 +189,8 @@ Describe "Checking the file <_.Name> code works as intended" -ForEach $files {
             'Dbc',
             'PiiScan',
             'EncryptionCertificate',
-            'DbaSpn'
+            'DbaSpn',
+            'database.windows'
 
         )
         #find if it matches and write it out so we see it in the output and know it was looked at
