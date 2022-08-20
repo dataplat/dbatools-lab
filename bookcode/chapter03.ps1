@@ -73,7 +73,7 @@ docker network create localnet
 
 # Expose engines and setup shared path for migrations
 docker run -p 1433:1433  --volume shared:/shared:z --name mssql1 --hostname mssql1 --network localnet -d dbatools/sqlinstance
-docker run -p 14333:1433 --volume shared:/shared:z --name mssql --hostname mssql2 --network localnet -d dbatools/sqlinstance2
+docker run -p 14333:1433 --volume shared:/shared:z --name mssql2 --hostname mssql2 --network localnet -d dbatools/sqlinstance2
 
         ###########
         
